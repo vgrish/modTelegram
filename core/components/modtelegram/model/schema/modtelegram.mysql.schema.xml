@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="modtelegram" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" phpdoc-package="modtelegram"
+	   version="1.1">
+
+
+</model>

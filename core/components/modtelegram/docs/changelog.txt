@@ -1,0 +1,5 @@
+Changelog for modTelegram.
+
+1.0.0-beta
+==============
+- Initial
