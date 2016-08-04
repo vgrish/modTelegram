@@ -3,6 +3,7 @@
 ini_set('display_errors', 1);
 ini_set('error_reporting', -1);
 
+
 /**
  * The base class for modtelegram.
  */
@@ -400,6 +401,14 @@ class modtelegram
             'reply_to_message_id'  => null,
             'reply_markup'         => $this->getOption('reply_markup', null, '{}', true),
         ), $params);
+
+        if ($fromPath = $this->getOption('from_path', $params)) {
+            if (strpos($fromPath, MODX_BASE_PATH) !== 0) {
+                $fromPath = MODX_BASE_PATH . $fromPath;
+            }
+            $params['photo'] = $this->telegramEncodeFile($fromPath);
+        }
+
         $data = $this->request($mode, $params);
 
         return $data;
@@ -432,9 +441,7 @@ class modtelegram
 
         $url = $this->telegramGetFileUrl($fromPath);
 
-        $options = array();
-
-        $data = $this->curlClient->request($url, '', 'GET', $params, $options);
+        $data = $this->request('', null, $url);
         if (!is_string($data)) {
             $this->log('', $data, true);
         }
@@ -477,35 +484,41 @@ class modtelegram
         return $url;
     }
 
-    /**
-     * @param string $mode
-     * @param array  $params
-     * @param array  $options
-     *
-     * @return array
-     */
-    public function request($mode = '', array $params = array(), array $options = array())
+    protected function telegramEncodeFile($path = '')
+    {
+        $file = "@{$path}";
+
+        return $file;
+    }
+
+    public function request($mode = '', $params = null, $url = '')
     {
         $mode = trim($mode, '/');
 
-        $params = array_merge(array(), $params);
-
-        $options = array_merge(array(
-            'contentType' => 'json',
-        ), $options);
-
-        $url = $this->telegramGetApiUrl($mode);
-
-
-        $this->modx->log(1, print_r($url, 1));
-
-
-        $data = $this->curlClient->request($url, '', 'POST', $params, $options);
-        $data = (array)json_decode($data, true);
-        if (empty($data['ok'])) {
-            $this->log('', $data, true);
+        if (empty($url)) {
+            $url = $this->telegramGetApiUrl($mode);
         }
 
+        $post = is_array($params);
+        $contentType = $post ? 'multipart/form-data' : 'application/json';
+
+        $ch = curl_init($url);
+        curl_setopt_array(
+            $ch,
+            array(
+                CURLOPT_POST           => $post,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER     => array('Content-Type: ' . $contentType),
+                CURLOPT_SSL_VERIFYPEER => 0
+            )
+        );
+
+        if ($post) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        }
+
+        $data = curl_exec($ch);
+        curl_close($ch);
         $data = $this->prepareData($data, $mode);
         $this->log('', $data);
 
@@ -518,29 +531,25 @@ class modtelegram
      *
      * @return array
      */
-    protected function prepareData(array $response = array(), $mode = '')
+    protected function prepareData($data, $mode = '')
     {
-        $data = array();
         $mode = strtolower($mode);
 
         $this->modx->log(1, print_r($mode, 1));
 
         switch ($mode) {
-
-            case 'getme':
-            case 'getupdates':
-            case 'getuserprofilephotos':
-            case 'sendmessage':
-            case 'getfile':
-                $data = isset($response['result']) ? $response['result'] : array();
+            case '':
                 break;
-
             default:
-                $data = $response;
+                $data = json_decode($data, true);
+                if (empty($data['ok'])) {
+                    $this->log('', $data, true);
+                }
+                $data = isset($data['result']) ? $data['result'] : array();
                 break;
         }
 
-        return (array)$data;
+        return $data;
     }
 
 }
