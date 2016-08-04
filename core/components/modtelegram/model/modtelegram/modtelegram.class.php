@@ -415,6 +415,337 @@ class modtelegram
     }
 
     /**
+     *
+     * https://core.telegram.org/bots/api#sendaudio
+     *
+     * @param array $params
+     */
+    public function telegramSendAudio(array $params = array())
+    {
+        $mode = '/sendAudio/';
+        $params = array_merge(array(
+            'chat_id'              => null,
+            'audio'                => null,
+            'duration'             => null,
+            'performer'            => null,
+            'title'                => null,
+            'disable_notification' => $this->getOption('disable_notification', null, false, true),
+            'reply_to_message_id'  => null,
+            'reply_markup'         => $this->getOption('reply_markup', null, '{}', true),
+        ), $params);
+
+        if ($fromPath = $this->getOption('from_path', $params)) {
+            if (strpos($fromPath, MODX_BASE_PATH) !== 0) {
+                $fromPath = MODX_BASE_PATH . $fromPath;
+            }
+            $params['audio'] = $this->telegramEncodeFile($fromPath);
+        }
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#senddocument
+     *
+     * @param array $params
+     */
+    public function telegramSendDocument(array $params = array())
+    {
+        $mode = '/sendDocument/';
+        $params = array_merge(array(
+            'chat_id'              => null,
+            'document'             => null,
+            'caption'              => null,
+            'disable_notification' => $this->getOption('disable_notification', null, false, true),
+            'reply_to_message_id'  => null,
+            'reply_markup'         => $this->getOption('reply_markup', null, '{}', true),
+        ), $params);
+
+        if ($fromPath = $this->getOption('from_path', $params)) {
+            if (strpos($fromPath, MODX_BASE_PATH) !== 0) {
+                $fromPath = MODX_BASE_PATH . $fromPath;
+            }
+            $params['document'] = $this->telegramEncodeFile($fromPath);
+        }
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#sendsticker
+     *
+     * @param array $params
+     */
+    public function telegramSendSticker(array $params = array())
+    {
+        $mode = '/sendSticker/';
+        $params = array_merge(array(
+            'chat_id'              => null,
+            'sticker'              => null,
+            'disable_notification' => $this->getOption('disable_notification', null, false, true),
+            'reply_to_message_id'  => null,
+            'reply_markup'         => $this->getOption('reply_markup', null, '{}', true),
+        ), $params);
+
+        if ($fromPath = $this->getOption('from_path', $params)) {
+            if (strpos($fromPath, MODX_BASE_PATH) !== 0) {
+                $fromPath = MODX_BASE_PATH . $fromPath;
+            }
+            $params['sticker'] = $this->telegramEncodeFile($fromPath);
+        }
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#sendvideo
+     *
+     * @param array $params
+     */
+    public function telegramSendVideo(array $params = array())
+    {
+        $mode = '/sendVideo/';
+        $params = array_merge(array(
+            'chat_id'              => null,
+            'video'                => null,
+            'duration'             => null,
+            'width'                => null,
+            'height'               => null,
+            'caption'              => null,
+            'disable_notification' => $this->getOption('disable_notification', null, false, true),
+            'reply_to_message_id'  => null,
+            'reply_markup'         => $this->getOption('reply_markup', null, '{}', true),
+        ), $params);
+
+        if ($fromPath = $this->getOption('from_path', $params)) {
+            if (strpos($fromPath, MODX_BASE_PATH) !== 0) {
+                $fromPath = MODX_BASE_PATH . $fromPath;
+            }
+            $params['video'] = $this->telegramEncodeFile($fromPath);
+        }
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#sendvoice
+     *
+     * @param array $params
+     */
+    public function telegramSendVoice(array $params = array())
+    {
+        $mode = '/sendVoice/';
+        $params = array_merge(array(
+            'chat_id'              => null,
+            'voice'                => null,
+            'duration'             => null,
+            'disable_notification' => $this->getOption('disable_notification', null, false, true),
+            'reply_to_message_id'  => null,
+            'reply_markup'         => $this->getOption('reply_markup', null, '{}', true),
+        ), $params);
+
+        if ($fromPath = $this->getOption('from_path', $params)) {
+            if (strpos($fromPath, MODX_BASE_PATH) !== 0) {
+                $fromPath = MODX_BASE_PATH . $fromPath;
+            }
+            $params['voice'] = $this->telegramEncodeFile($fromPath);
+        }
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#sendlocation
+     *
+     * @param array $params
+     */
+    public function telegramSendLocation(array $params = array())
+    {
+        $mode = '/sendLocation/';
+        $params = array_merge(array(
+            'chat_id'              => null,
+            'latitude'             => null,
+            'longitude'            => null,
+            'disable_notification' => $this->getOption('disable_notification', null, false, true),
+            'reply_to_message_id'  => null,
+            'reply_markup'         => $this->getOption('reply_markup', null, '{}', true),
+        ), $params);
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#sendcontact
+     *
+     * @param array $params
+     */
+    public function telegramSendContact(array $params = array())
+    {
+        $mode = '/sendContact/';
+        $params = array_merge(array(
+            'chat_id'              => null,
+            'phone_number'         => null,
+            'first_name'           => null,
+            'last_name'            => null,
+            'disable_notification' => $this->getOption('disable_notification', null, false, true),
+            'reply_to_message_id'  => null,
+            'reply_markup'         => $this->getOption('reply_markup', null, '{}', true),
+        ), $params);
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#sendchataction
+     *
+     * @param array $params
+     */
+    public function telegramSendChatAction(array $params = array())
+    {
+        $mode = '/sendChatAction/';
+        $params = array_merge(array(
+            'chat_id' => null,
+            'action'  => null,
+        ), $params);
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#kickchatmember
+     *
+     * @param array $params
+     */
+    public function telegramKickChatMember(array $params = array())
+    {
+        $mode = '/kickChatMember/';
+        $params = array_merge(array(
+            'chat_id' => null,
+            'user_id' => null,
+        ), $params);
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#leavechat
+     *
+     * @param array $params
+     */
+    public function telegramLeaveChat(array $params = array())
+    {
+        $mode = '/leaveChat/';
+        $params = array_merge(array(
+            'chat_id' => null,
+        ), $params);
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#getchat
+     *
+     * @param array $params
+     */
+    public function telegramGetChat(array $params = array())
+    {
+        $mode = '/getChat/';
+        $params = array_merge(array(
+            'chat_id' => null,
+        ), $params);
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#getchatadministrators
+     *
+     * @param array $params
+     */
+    public function telegramGetChatAdministrators(array $params = array())
+    {
+        $mode = '/getChatAdministrators/';
+        $params = array_merge(array(
+            'chat_id' => null,
+        ), $params);
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#getchatmemberscount
+     *
+     * @param array $params
+     */
+    public function telegramGetChatMembersCount(array $params = array())
+    {
+        $mode = '/getChatMembersCount/';
+        $params = array_merge(array(
+            'chat_id' => null,
+        ), $params);
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     *
+     * https://core.telegram.org/bots/api#getchatmemberscount
+     *
+     * @param array $params
+     */
+    public function telegramGetChatMember(array $params = array())
+    {
+        $mode = '/getChatMember/';
+        $params = array_merge(array(
+            'chat_id' => null,
+            'user_id' => null,
+        ), $params);
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+
+    /**
      * @param array $params
      *
      * @return modRestResponse
