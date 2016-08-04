@@ -18,6 +18,9 @@ class modtelegram
     /** @var array $initialized */
     public $initialized = array();
 
+    /** @var modRestCurlClient $curlClient */
+    public $curlClient;
+
     /**
      * @param modX  $modx
      * @param array $config
@@ -322,9 +325,13 @@ class modtelegram
      *
      * @return array
      */
-    public function telegramGetFile($file = '')
+    public function telegramGetFile(array $params = array())
     {
-        $data = $this->request($file, array(), array(), 'file/bot');
+        $mode = '/getFile/';
+        $params = array_merge(array(
+            'file_id' => null,
+        ), $params);
+        $data = $this->request($mode, $params);
 
         return $data;
     }
@@ -346,7 +353,7 @@ class modtelegram
             'parse_mode'               => $this->getOption('parse_mode', null, 'html', true),
             'disable_web_page_preview' => $this->getOption('disable_web_page_preview', null, false, true),
             'disable_notification'     => $this->getOption('disable_notification', null, false, true),
-            'reply_to_message_id'      => $this->getOption('reply_to_message_id', null),
+            'reply_to_message_id'      => null,
             'reply_markup'             => $this->getOption('reply_markup', null, '{}', true),
         ), $params);
         $data = $this->request($mode, $params);
@@ -377,18 +384,109 @@ class modtelegram
 
 
     /**
+     *
+     * https://core.telegram.org/bots/api#sendphoto
+     *
+     * @param array $params
+     */
+    public function telegramSendPhoto(array $params = array())
+    {
+        $mode = '/sendPhoto/';
+        $params = array_merge(array(
+            'chat_id'              => null,
+            'photo'                => null,
+            'caption'              => null,
+            'disable_notification' => $this->getOption('disable_notification', null, false, true),
+            'reply_to_message_id'  => null,
+            'reply_markup'         => $this->getOption('reply_markup', null, '{}', true),
+        ), $params);
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return modRestResponse
+     */
+    public function telegramDownloadFile(array $params = array())
+    {
+        $fromPath = $this->getOption('from_path', $params, '', true);
+        $toPath = $this->getOption('to_path', $params, '', true);
+        $toPath = rtrim($toPath, '/') . '/';
+
+        $name = explode('/', $fromPath);
+        $name = array_pop($name);
+
+        if (strpos($toPath, MODX_BASE_PATH) !== 0) {
+            $toPath = MODX_BASE_PATH . $toPath;
+        }
+
+        $cacheManager = $this->modx->getCacheManager();
+        if (!file_exists($toPath) OR !is_dir($toPath)) {
+            if (!$cacheManager->writeTree($toPath)) {
+                $this->log('', 'Could not create directory: ' . $toPath, true);
+            }
+        }
+
+        $url = $this->telegramGetFileUrl($fromPath);
+
+        $options = array();
+
+        $data = $this->curlClient->request($url, '', 'GET', $params, $options);
+        if (!is_string($data)) {
+            $this->log('', $data, true);
+        }
+
+        if (!file_put_contents($toPath . $name, $data)) {
+            $this->log('Write file error', $data, true);
+        }
+
+        return $data;
+    }
+
+
+    /**
+     * @param string $mode
+     * @param string $sfx
+     *
+     * @return mixed|null|string
+     */
+    protected function telegramGetApiUrl($mode = '', $sfx = 'bot')
+    {
+        $url = $this->getOption('apiUrl', null, 'https://api.telegram.org/', true);
+        $key = $this->getOption('apiKey', null, '', true);
+        $url = rtrim($url, '/') . '/' . $sfx . $key . '/' . $mode;
+
+        return $url;
+    }
+
+    /**
+     * @param string $path
+     * @param string $sfx
+     *
+     * @return mixed|null|string
+     */
+    protected function telegramGetFileUrl($path = '', $sfx = 'file/bot')
+    {
+        $url = $this->getOption('apiUrl', null, 'https://api.telegram.org/', true);
+        $key = $this->getOption('apiKey', null, '', true);
+        $url = rtrim($url, '/') . '/' . $sfx . $key . '/' . $path;
+
+        return $url;
+    }
+
+    /**
      * @param string $mode
      * @param array  $params
      * @param array  $options
      *
      * @return array
      */
-    public function request($mode = '', array $params = array(), array $options = array(), $sfx = 'bot')
+    public function request($mode = '', array $params = array(), array $options = array())
     {
         $mode = trim($mode, '/');
-
-        $apiKey = $this->getOption('apiKey', null, '', true);
-        $apiUrl = $this->getOption('apiUrl', null, 'https://api.telegram.org/', true);
 
         $params = array_merge(array(), $params);
 
@@ -396,7 +494,7 @@ class modtelegram
             'contentType' => 'json',
         ), $options);
 
-        $url = rtrim($apiUrl, '/') . '/' . $sfx . $apiKey . '/' . $mode;
+        $url = $this->telegramGetApiUrl($mode);
 
 
         $this->modx->log(1, print_r($url, 1));
@@ -407,6 +505,7 @@ class modtelegram
         if (empty($data['ok'])) {
             $this->log('', $data, true);
         }
+
         $data = $this->prepareData($data, $mode);
         $this->log('', $data);
 
@@ -432,6 +531,7 @@ class modtelegram
             case 'getupdates':
             case 'getuserprofilephotos':
             case 'sendmessage':
+            case 'getfile':
                 $data = isset($response['result']) ? $response['result'] : array();
                 break;
 
