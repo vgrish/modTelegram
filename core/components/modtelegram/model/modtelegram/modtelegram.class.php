@@ -250,6 +250,100 @@ class modtelegram
     }
 
     /**
+     * @param        $array
+     * @param string $delimiter
+     *
+     * @return array
+     */
+    public function explodeAndClean($array, $delimiter = ',')
+    {
+        $array = explode($delimiter, $array);     // Explode fields to array
+        $array = array_map('trim', $array);       // Trim array's values
+        $array = array_keys(array_flip($array));  // Remove duplicate fields
+        $array = array_filter($array);            // Remove empty values from array
+        return $array;
+    }
+
+    /**
+     * @param        $array
+     * @param string $delimiter
+     *
+     * @return array|string
+     */
+    public function cleanAndImplode($array, $delimiter = ',')
+    {
+        $array = array_map('trim', $array);       // Trim array's values
+        $array = array_keys(array_flip($array));  // Remove duplicate fields
+        $array = array_filter($array);            // Remove empty values from array
+        $array = implode($delimiter, $array);
+
+        return $array;
+    }
+
+    /**
+     * from
+     * https://github.com/bezumkin/pdoTools/blob/19195925226e3f8cb0ba3c8d727567e9f3335673/core/components/pdotools/model/pdotools/pdotools.class.php#L320
+     *
+     * @param array  $array
+     * @param string $plPrefix
+     * @param string $prefix
+     * @param string $suffix
+     * @param bool   $uncacheable
+     *
+     * @return array
+     */
+    public function makePlaceholders(
+        array $array = array(),
+        $plPrefix = '',
+        $prefix = '[[+',
+        $suffix = ']]',
+        $uncacheable = true
+    ) {
+        $result = array('pl' => array(), 'vl' => array());
+        $uncachedPrefix = str_replace('[[', '[[!', $prefix);
+        foreach ($array as $k => $v) {
+            if (is_array($v)) {
+                $result = array_merge_recursive($result,
+                    $this->makePlaceholders($v, $plPrefix . $k . '.', $prefix, $suffix, $uncacheable));
+            } else {
+                $pl = $plPrefix . $k;
+                $result['pl'][$pl] = $prefix . $pl . $suffix;
+                $result['vl'][$pl] = $v;
+                if ($uncacheable) {
+                    $result['pl']['!' . $pl] = $uncachedPrefix . $pl . $suffix;
+                    $result['vl']['!' . $pl] = $v;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param string $name
+     * @param array  $properties
+     *
+     * @return mixed|string
+     */
+    public function getChunk($name = '', array $properties = array())
+    {
+        if (class_exists('pdoTools') AND $pdo = $this->modx->getService('pdoTools')) {
+            $output = $pdo->getChunk($name, $properties);
+        } elseif (strpos($name, '@INLINE ') !== false) {
+            $content = str_replace('@INLINE', '', $name);
+            /** @var modChunk $chunk */
+            $chunk = $this->modx->newObject('modChunk', array('name' => 'inline-' . uniqid()));
+            $chunk->setCacheable(false);
+            $output = $chunk->process($properties, $content);
+        } else {
+            $output = $this->modx->getChunk($name, $properties);
+        }
+
+        return $output;
+    }
+
+
+    /**
      * @param string $message
      * @param array  $data
      * @param bool   $showLog
@@ -263,6 +357,31 @@ class modtelegram
                 $this->modx->log(modX::LOG_LEVEL_ERROR, print_r($data, 1));
             }
         }
+    }
+
+    public function loadResourceJsCss(array $properties = array())
+    {
+        $properties = array_merge($this->config, $properties);
+        $pls = $this->makePlaceholders($properties);
+
+        if ($properties['frontendJs']) {
+            $this->modx->regClientScript(str_replace($pls['pl'], $pls['vl'], $properties['frontendJs']));
+        }
+        if ($properties['frontendCss']) {
+            $this->modx->regClientCSS(str_replace($pls['pl'], $pls['vl'], $properties['frontendCss']));
+        }
+
+        $config = array();
+        $config['assetsBaseUrl'] = str_replace($pls['pl'], $pls['vl'], $properties['assetsBaseUrl']);
+        $config['assetsUrl'] = str_replace($pls['pl'], $pls['vl'], $properties['assetsUrl']);
+        $config['actionUrl'] = str_replace($pls['pl'], $pls['vl'], $properties['actionUrl']);
+        $config['helper'] = (array)$properties['helper'];
+        $config['propkey'] = "{$properties['propkey']}";
+        $config['action'] = "{$properties['action']}";
+        $config['ctx'] = "{$this->modx->context->get('key')}";
+
+        $this->modx->regClientStartupScript("<script type=\"text/javascript\">modTelegramConfig={$this->modx->toJSON($config)};</script>",
+            true);
     }
 
 

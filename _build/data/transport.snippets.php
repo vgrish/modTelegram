@@ -2,10 +2,8 @@
 
 $snippets = array();
 
-$tmp = array(/*'modtelegram' => array(
-		'file' => 'modtelegram',
-		'description' => '',
-	),*/
+$tmp = array(
+    'modTelegram.helper' => array('file' => 'helper', 'description' => ''),
 );
 
 foreach ($tmp as $k => $v) {
