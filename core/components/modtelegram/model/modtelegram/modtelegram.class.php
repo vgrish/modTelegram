@@ -863,6 +863,32 @@ class modtelegram
         return $data;
     }
 
+    /**
+     *
+     * https://core.telegram.org/bots/api#setwebhook
+     *
+     * @param array $params
+     */
+    public function telegramSetWebHook(array $params = array())
+    {
+        $mode = '/setWebhook/';
+        $params = array_merge(array(
+            'url'         => null,
+            'certificate' => null,
+        ), $params);
+
+        if ($fromPath = $this->getOption('from_path', $params)) {
+            if (strpos($fromPath, MODX_BASE_PATH) !== 0) {
+                $fromPath = MODX_BASE_PATH . $fromPath;
+            }
+            $params['certificate'] = $this->telegramEncodeFile($fromPath);
+        }
+
+        $data = $this->request($mode, $params);
+
+        return $data;
+    }
+
 
     /**
      * @param array $params
