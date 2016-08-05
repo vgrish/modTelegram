@@ -41,6 +41,8 @@ if ($modx->error->hasError() OR !($modtelegram instanceof modtelegram)) {
     die('Error');
 }
 
+$modx->log(1, print_r($_REQUEST ,1));
+
 $modtelegram->initialize($ctx);
 $modtelegram->config['processorsPath'] = $modtelegram->config['processorsPath'] . 'web/';
 if (!$response = $modtelegram->runProcessor($_REQUEST['action'], $_REQUEST)) {

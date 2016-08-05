@@ -359,6 +359,9 @@ class modtelegram
         }
     }
 
+    /**
+     * @param array $properties
+     */
     public function loadResourceJsCss(array $properties = array())
     {
         $properties = array_merge($this->config, $properties);
@@ -864,6 +867,18 @@ class modtelegram
     }
 
     /**
+     * @return mixed|string
+     */
+    public function telegramGetWebHookUrl()
+    {
+        $url = $this->modx->getOption('site_url', null);
+        $actionUrl = $this->getOption('actionUrl', null);
+        $url = trim($url, '/') . '/' . trim($actionUrl, '/');
+
+        return $url;
+    }
+
+    /**
      *
      * https://core.telegram.org/bots/api#setwebhook
      *
@@ -873,7 +888,7 @@ class modtelegram
     {
         $mode = '/setWebhook/';
         $params = array_merge(array(
-            'url'         => null,
+            'url'         => $this->telegramGetWebHookUrl(),
             'certificate' => null,
         ), $params);
 
@@ -960,6 +975,11 @@ class modtelegram
         return $url;
     }
 
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
     protected function telegramEncodeFile($path = '')
     {
         $file = "@{$path}";
@@ -967,6 +987,13 @@ class modtelegram
         return $file;
     }
 
+    /**
+     * @param string $mode
+     * @param null   $params
+     * @param string $url
+     *
+     * @return array|mixed
+     */
     public function request($mode = '', $params = null, $url = '')
     {
         $mode = trim($mode, '/');
