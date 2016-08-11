@@ -34,6 +34,8 @@ class modChatSendMessageProcessor extends modTelegramResponseProcessor
             return $this->success('', $data);
         }
 
+        $data['error'][] = $this->modtelegram->lexicon('chatin_user_info_failure_' . $this->action);
+
         return $this->failure('', $data);
     }
 

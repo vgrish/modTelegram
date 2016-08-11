@@ -50,7 +50,8 @@ $_lang['modtelegram_chatin_manager_info_success_initialize'] = 'У вас нов
 $_lang['modtelegram_chatin_user_info_failure_initialize'] = 'Нет доступных менеджеров';
 $_lang['modtelegram_chatin_user_info_success_initialize'] = '';
 
-
+$_lang['modtelegram_chatin_user_info_failure_sendmessage'] = 'Ошибка отправки сообщения';
+$_lang['modtelegram_chatin_user_info_success_sendmessage'] = '';
 
 
 $_lang['modtelegram_chat_user_info_failure_initialize'] = 'Нет доступных менеджеров';
