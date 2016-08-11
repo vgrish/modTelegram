@@ -5,7 +5,7 @@ $properties = array();
 $tmp = array(
     'actions'     => array(
         'type'  => 'textfield',
-        'value' => 'initialize,',
+        'value' => 'initialize,getmessage,sendmessage',
     ),
     'helper'      => array(
         'type'  => 'textarea',

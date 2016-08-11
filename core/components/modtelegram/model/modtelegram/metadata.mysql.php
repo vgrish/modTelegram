@@ -1,10 +1,11 @@
 <?php
 
 $xpdo_meta_map = array (
-  'xPDOSimpleObject' => 
+  'xPDOObject' => 
   array (
-    0 => 'modTelegramManager',
-    1 => 'modTelegramChat',
-    2 => 'modTelegramMessage',
+    0 => 'modTelegramUser',
+    1 => 'modTelegramManager',
+    2 => 'modTelegramChat',
+    3 => 'modTelegramMessage',
   ),
 );

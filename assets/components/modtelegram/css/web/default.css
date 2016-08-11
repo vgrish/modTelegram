@@ -39,7 +39,7 @@
 
 .modtelegram-helper-chat {
 	width: 350px;
-	height: 300px;
+	height: 350px;
 	display: block;
 	position: fixed;
 	background-color: #0088cc;
@@ -88,14 +88,10 @@
 	background-color: #fff;
 }
 
-.modtelegram-helper-chat-initialize {
-	color: #000;
-	border: none;
-}
-
 .modtelegram-helper-chat-body {
-	height: 75%;
+	height: 70%;
 	background-color: #fff;
+	overflow-y: scroll;
 }
 
 .modtelegram-helper-chat-footer {
@@ -104,3 +100,39 @@
 	padding: 10px;
 	font-size: 12px;
 }
+
+
+.modtelegram-helper-message {
+	display: inline-block;
+	padding: 5px;
+	margin: 5px;
+	width: 80%;
+	font-size: 10pt;
+	box-shadow: 1px 1px 1px 1px #ccc;
+}
+.modtelegram-helper-message-header {
+	font-size: 8pt;
+	color: #ccc;
+}
+.modtelegram-helper-message-footer {
+	font-size: 8pt;
+}
+
+.modtelegram-helper-message.modtelegram-from-user {
+	float: left;
+}
+.modtelegram-helper-message.modtelegram-from-manager {
+	float: right;
+}
+
+
+.modtelegram-helper-chat-input {
+	width: 100%;
+	position: absolute;
+	bottom: 10%;
+}
+
+.modtelegram-helper-chat-input textarea {
+	width: 100%;
+}
+

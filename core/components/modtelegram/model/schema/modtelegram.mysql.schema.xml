@@ -3,64 +3,94 @@
 	   version="1.1">
 
 
-	<object class="modTelegramManager" table="modtelegram_managers" extends="xPDOSimpleObject">
-		<field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index"/>
-		<field key="telegram_id" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+	<object class="modTelegramUser" table="modtelegram_users" extends="xPDOObject">
+		<field key="id" dbtype="varchar" precision="100" phptype="string" null="false" index="pk"/>
+		<field key="user" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"
+			   index="index"/>
 		<field key="active" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" null="false"
 			   default="1" index="index"/>
 
-		<index alias="telegram_id" name="telegram_id" primary="false" unique="false" type="BTREE">
-			<column key="telegram_id" length="" collation="A" null="false"/>
+		<index alias="id" name="id" primary="true" unique="true" type="BTREE">
+			<column key="id" length="" collation="A" null="false"/>
+		</index>
+		<index alias="user" name="user" primary="false" unique="false" type="BTREE">
+			<column key="user" length="" collation="A" null="false"/>
 		</index>
 		<index alias="active" name="active" primary="false" unique="false" type="BTREE">
 			<column key="active" length="" collation="A" null="false"/>
 		</index>
 
-		<composite alias="Chats" class="modTelegramChat" local="id" foreign="manager_id" cardinality="many"
+		<composite alias="Chats" class="modTelegramChat" local="id" foreign="uid" cardinality="many"
 				   owner="local"/>
+		<aggregate alias="User" class="modUser" local="user" foreign="id" owner="foreign" cardinality="one"/>
 
 	</object>
 
 
-	<object class="modTelegramChat" table="modtelegram_chats" extends="xPDOSimpleObject">
-		<field key="chat_id" dbtype="varchar" precision="50" phptype="string" null="false" default=""/>
-		<field key="manager_id" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false"
-			   default="0"/>
+	<object class="modTelegramManager" table="modtelegram_managers" extends="xPDOObject">
+		<field key="id" dbtype="varchar" precision="100" phptype="string" null="false" index="pk"/>
+		<field key="user" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"
+			   index="index"/>
+		<field key="active" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" null="false"
+			   default="1" index="index"/>
 
-		<index alias="chat_id" name="chat_id" primary="false" unique="false" type="BTREE">
-			<column key="chat_id" length="" collation="A" null="false"/>
+		<index alias="id" name="id" primary="true" unique="true" type="BTREE">
+			<column key="id" length="" collation="A" null="false"/>
 		</index>
-		<index alias="manager_id" name="manager_id" primary="false" unique="false" type="BTREE">
-			<column key="manager_id" length="" collation="A" null="false"/>
+		<index alias="user" name="user" primary="false" unique="false" type="BTREE">
+			<column key="user" length="" collation="A" null="false"/>
+		</index>
+		<index alias="active" name="active" primary="false" unique="false" type="BTREE">
+			<column key="active" length="" collation="A" null="false"/>
 		</index>
 
-		<aggregate alias="Manager" class="modTelegramManager" local="manager_id" foreign="id" cardinality="one"
+		<composite alias="Chats" class="modTelegramChat" local="id" foreign="mid" cardinality="many"
+				   owner="local"/>
+		<aggregate alias="User" class="modUser" local="user" foreign="id" owner="foreign" cardinality="one"/>
+
+	</object>
+
+
+	<object class="modTelegramChat" table="modtelegram_chats" extends="xPDOObject">
+		<field key="uid" dbtype="varchar" precision="100" phptype="string" null="false" index="pk"/>
+		<field key="mid" dbtype="varchar" precision="100" phptype="string" null="false" index="pk"/>
+		<field key="active" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" null="false"
+			   default="0" index="index"/>
+
+		<index alias="chat" name="chat" primary="false" unique="true" type="BTREE">
+			<column key="uid" length="" collation="A" null="false"/>
+			<column key="mid" length="" collation="A" null="false"/>
+		</index>
+
+		<aggregate alias="User" class="modTelegramUser" local="uid" foreign="id" cardinality="one" owner="foreign"/>
+		<aggregate alias="Manager" class="modTelegramManager" local="mid" foreign="id" cardinality="one"
 				   owner="foreign"/>
-
 	</object>
 
 
-	<object class="modTelegramMessage" table="modtelegram_messages" extends="xPDOSimpleObject">
-		<field key="chat_id" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
-		<field key="sender_id" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
-		<field key="message_id" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false"
-			   default="0"/>
+	<object class="modTelegramMessage" table="modtelegram_messages" extends="xPDOObject">
+		<field key="uid" dbtype="varchar" precision="100" phptype="string" null="false" index="pk"/>
+		<field key="mid" dbtype="varchar" precision="100" phptype="string" null="false" index="pk"/>
+		<field key="from" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="pk"/>
+		<field key="type" dbtype="varchar" precision="100" phptype="string" null="false" default=""/>
 		<field key="message" dbtype="text" phptype="string" null="false" default=""/>
-		<field key="timestamp" dbtype="datetime" phptype="datetime" null="true"/>
+		<field key="timestamp" dbtype="int" precision="20" phptype="timestamp" null="false" default="0" />
 
-		<index alias="chat_id" name="chat_id" primary="false" unique="false" type="BTREE">
-			<column key="chat_id" length="" collation="A" null="false"/>
+		<index alias="uid" name="uid" primary="false" unique="false" type="BTREE">
+			<column key="uid" length="" collation="A" null="false"/>
 		</index>
-		<index alias="sender_id" name="sender_id" primary="false" unique="false" type="BTREE">
-			<column key="sender_id" length="" collation="A" null="false"/>
+		<index alias="mid" name="mid" primary="false" unique="false" type="BTREE">
+			<column key="mid" length="" collation="A" null="false"/>
 		</index>
-		<index alias="message_id" name="message_id" primary="false" unique="false" type="BTREE">
-			<column key="message_id" length="" collation="A" null="false"/>
+		<index alias="from" name="from" primary="false" unique="false" type="BTREE">
+			<column key="from" length="" collation="A" null="false"/>
+		</index>
+		<index alias="type" name="type" primary="false" unique="false" type="BTREE">
+			<column key="type" length="" collation="A" null="false"/>
 		</index>
 		<index alias="timestamp" name="timestamp" primary="false" unique="false" type="BTREE">
-			<column key="timestamp" length="" collation="A" null="false" />
+			<column key="timestamp" length="" collation="A" null="false"/>
 		</index>
-
 
 	</object>
 

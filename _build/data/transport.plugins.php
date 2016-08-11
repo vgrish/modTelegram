@@ -2,15 +2,14 @@
 
 $plugins = array();
 
-$tmp = array(/*
-	'modtelegram' => array(
-		'file' => 'modtelegram',
-		'description' => '',
-		'events' => array(
-			'OnManagerPageInit' => array()
-		)
-	)
-	*/
+$tmp = array(
+    'modTelegram' => array(
+        'file'        => 'modtelegram',
+        'description' => '',
+        'events'      => array(
+            'OnMODXInit' => array('priority' => 100),
+        )
+    )
 );
 
 foreach ($tmp as $k => $v) {

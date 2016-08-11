@@ -3,59 +3,59 @@ $xpdo_meta_map['modTelegramChat']= array (
   'package' => 'modtelegram',
   'version' => '1.1',
   'table' => 'modtelegram_chats',
-  'extends' => 'xPDOSimpleObject',
+  'extends' => 'xPDOObject',
   'fields' => 
   array (
-    'chat_id' => '',
-    'manager_id' => 0,
+    'uid' => NULL,
+    'mid' => NULL,
+    'active' => 0,
   ),
   'fieldMeta' => 
   array (
-    'chat_id' => 
+    'uid' => 
     array (
       'dbtype' => 'varchar',
-      'precision' => '50',
+      'precision' => '100',
       'phptype' => 'string',
       'null' => false,
-      'default' => '',
+      'index' => 'pk',
     ),
-    'manager_id' => 
+    'mid' => 
     array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'phptype' => 'integer',
+      'dbtype' => 'varchar',
+      'precision' => '100',
+      'phptype' => 'string',
+      'null' => false,
+      'index' => 'pk',
+    ),
+    'active' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'boolean',
       'attributes' => 'unsigned',
       'null' => false,
       'default' => 0,
+      'index' => 'index',
     ),
   ),
   'indexes' => 
   array (
-    'chat_id' => 
+    'chat' => 
     array (
-      'alias' => 'chat_id',
+      'alias' => 'chat',
       'primary' => false,
-      'unique' => false,
+      'unique' => true,
       'type' => 'BTREE',
       'columns' => 
       array (
-        'chat_id' => 
+        'uid' => 
         array (
           'length' => '',
           'collation' => 'A',
           'null' => false,
         ),
-      ),
-    ),
-    'manager_id' => 
-    array (
-      'alias' => 'manager_id',
-      'primary' => false,
-      'unique' => false,
-      'type' => 'BTREE',
-      'columns' => 
-      array (
-        'manager_id' => 
+        'mid' => 
         array (
           'length' => '',
           'collation' => 'A',
@@ -66,10 +66,18 @@ $xpdo_meta_map['modTelegramChat']= array (
   ),
   'aggregates' => 
   array (
+    'User' => 
+    array (
+      'class' => 'modTelegramUser',
+      'local' => 'uid',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
     'Manager' => 
     array (
       'class' => 'modTelegramManager',
-      'local' => 'manager_id',
+      'local' => 'mid',
       'foreign' => 'id',
       'cardinality' => 'one',
       'owner' => 'foreign',

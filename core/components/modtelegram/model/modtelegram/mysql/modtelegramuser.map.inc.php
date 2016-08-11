@@ -1,8 +1,8 @@
 <?php
-$xpdo_meta_map['modTelegramManager']= array (
+$xpdo_meta_map['modTelegramUser']= array (
   'package' => 'modtelegram',
   'version' => '1.1',
-  'table' => 'modtelegram_managers',
+  'table' => 'modtelegram_users',
   'extends' => 'xPDOObject',
   'fields' => 
   array (
@@ -98,7 +98,7 @@ $xpdo_meta_map['modTelegramManager']= array (
     array (
       'class' => 'modTelegramChat',
       'local' => 'id',
-      'foreign' => 'mid',
+      'foreign' => 'uid',
       'cardinality' => 'many',
       'owner' => 'local',
     ),

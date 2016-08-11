@@ -18,12 +18,13 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         $cacheManager->deleteTree(MODX_ASSETS_PATH . 'components/modtelegram/vendor/',
             array_merge(array('deleteTop' => true, 'skipDirs' => false, 'extensions' => array())));
 
-        $vendors = array(/*array(
-                'bs3modal',
-                'bs3modal',
-                'https://github.com/vgrish/bootstrap-modal/archive/master.zip',
+        $vendors = array(
+            array(
+                'sse',
+                'sse',
+                'https://github.com/byjg/jquery-sse/archive/master.zip',
                 MODX_ASSETS_PATH . 'components/modtelegram/vendor/'
-            ),*/
+            ),
         );
 
         foreach ($vendors as $vendor) {
@@ -69,6 +70,8 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
             } else {
                 $modx->log(xPDO::LOG_LEVEL_INFO,
                     "Could not extract <b>{$name}</b> from <b>{$tmp}</b> to <b>{$path}</b>. Error: " . $file->errorInfo());
+
+                return false;
             }
 
         }

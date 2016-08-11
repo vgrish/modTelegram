@@ -4,34 +4,39 @@ $settings = array();
 
 $tmp = array(
 
-    'apiUrl'          => array(
+    'api_url'         => array(
         'value' => 'https://api.telegram.org/',
         'xtype' => 'textfield',
         'area'  => 'modtelegram_main',
     ),
-    'apiKey'          => array(
-        'value' => '255957967:AAH9CsN4eWErXcaTnfryO7DURYwMkyoGwQo',
+    'api_key'         => array(
+        'value' => '269086151:AAHqare4N9AWiMvQONeB8d7KpQIxxhCh19U',
         'xtype' => 'textfield',
         'area'  => 'modtelegram_main',
     ),
-    'managerPassword' => array(
-        'value' => '12345',
+    'web_hook_url'    => array(
+        'value' => '',
         'xtype' => 'textfield',
+        'area'  => 'modtelegram_main',
+    ),
+    'web_hook_action' => array(
+        'value' => 'action,login,logout,chatin,chatout,reply,story',
+        'xtype' => 'textarea',
         'area'  => 'modtelegram_main',
     ),
 
     //временные
-    'assets_path'     => array(
+    'assets_path'      => array(
         'value' => '{base_path}modtelegram/assets/components/modtelegram/',
         'xtype' => 'textfield',
         'area'  => 'modtelegram_temp',
     ),
-    'assets_url'      => array(
+    'assets_url'       => array(
         'value' => '/modtelegram/assets/components/modtelegram/',
         'xtype' => 'textfield',
         'area'  => 'modtelegram_temp',
     ),
-    'core_path'       => array(
+    'core_path'        => array(
         'value' => '{base_path}modtelegram/core/components/modtelegram/',
         'xtype' => 'textfield',
         'area'  => 'modtelegram_temp',

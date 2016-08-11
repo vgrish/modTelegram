@@ -3,7 +3,6 @@
 ini_set('display_errors', 1);
 ini_set('error_reporting', -1);
 
-
 /**
  * The base class for modtelegram.
  */
@@ -21,6 +20,14 @@ class modtelegram
 
     /** @var modRestCurlClient $curlClient */
     public $curlClient;
+
+    public $classUser = 'modTelegramUser';
+    public $classManager = 'modTelegramManager';
+    public $classChat = 'modTelegramChat';
+    public $classMessage = 'modTelegramMessage';
+
+    public $classModUser = 'modUser';
+    public $classModUserProfile = 'modUserProfile';
 
     /**
      * @param modX  $modx
@@ -46,6 +53,7 @@ class modtelegram
             'assetsPath'      => $assetsPath,
             'assetsUrl'       => $assetsUrl,
             'actionUrl'       => $assetsUrl . 'action.php',
+            'hookUrl'         => $assetsUrl . 'webhook.php',
             'cssUrl'          => $assetsUrl . 'css/',
             'jsUrl'           => $assetsUrl . 'js/',
             'corePath'        => $corePath,
@@ -387,6 +395,109 @@ class modtelegram
             true);
     }
 
+    /**
+     * Sets data to cache
+     *
+     * @param mixed $data
+     * @param mixed $options
+     *
+     * @return string $cacheKey
+     */
+    public function setCache($data = array(), $options = array())
+    {
+        $cacheKey = $this->getCacheKey($options);
+        $cacheOptions = $this->getCacheOptions($options);
+        if (!empty($cacheKey) AND !empty($cacheOptions) AND $this->modx->getCacheManager()) {
+            $this->modx->cacheManager->set(
+                $cacheKey,
+                $data,
+                $cacheOptions[xPDO::OPT_CACHE_EXPIRES],
+                $cacheOptions
+            );
+        }
+
+        return $cacheKey;
+    }
+
+    /**
+     * Returns data from cache
+     *
+     * @param mixed $options
+     *
+     * @return mixed
+     */
+    public function getCache($options = array())
+    {
+        $cacheKey = $this->getCacheKey($options);
+        $cacheOptions = $this->getCacheOptions($options);
+        $cached = '';
+        if (!empty($cacheOptions) AND !empty($cacheKey) AND $this->modx->getCacheManager()) {
+            $cached = $this->modx->cacheManager->get($cacheKey, $cacheOptions);
+        }
+
+        return $cached;
+    }
+
+
+    /**
+     * @param array $options
+     *
+     * @return bool
+     */
+    public function clearCache($options = array())
+    {
+        $cacheKey = $this->getCacheKey($options);
+        $cacheOptions = $this->getCacheOptions($options);
+        $cacheOptions['cache_key'] .= $cacheKey;
+        if (!empty($cacheOptions) AND $this->modx->getCacheManager()) {
+            return $this->modx->cacheManager->clean($cacheOptions);
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns array with options for cache
+     *
+     * @param $options
+     *
+     * @return array
+     */
+    public function getCacheOptions($options = array())
+    {
+        if (empty($options)) {
+            $options = $this->config;
+        }
+        $cacheOptions = array(
+            xPDO::OPT_CACHE_KEY     => empty($options['cache_key'])
+                ? 'default' : 'default/' . $this->namespace . '/',
+            xPDO::OPT_CACHE_HANDLER => !empty($options['cache_handler'])
+                ? $options['cache_handler'] : $this->modx->getOption('cache_resource_handler', null, 'xPDOFileCache'),
+            xPDO::OPT_CACHE_EXPIRES => $options['cacheTime'] !== ''
+                ? (integer)$options['cacheTime'] : (integer)$this->modx->getOption('cache_resource_expires', null, 0),
+        );
+
+        return $cacheOptions;
+    }
+
+    /**
+     * Returns key for cache of specified options
+     *
+     * @var mixed $options
+     * @return bool|string
+     */
+    public function getCacheKey($options = array())
+    {
+        if (empty($options)) {
+            $options = $this->config;
+        }
+        if (!empty($options['cache_key'])) {
+            return $options['cache_key'];
+        }
+        $key = !empty($this->modx->resource) ? $this->modx->resource->getCacheKey() : '';
+
+        return $key . '/' . sha1(serialize($options));
+    }
 
     /**
      * https://core.telegram.org/bots/api#getme
@@ -872,8 +983,22 @@ class modtelegram
     public function telegramGetWebHookUrl()
     {
         $url = $this->modx->getOption('site_url', null);
-        $actionUrl = $this->getOption('actionUrl', null);
-        $url = trim($url, '/') . '/' . trim($actionUrl, '/');
+        $hookUrl = $this->getOption('hookUrl', null);
+        $url = trim($url, '/') . '/' . trim($hookUrl, '/');
+        $url = $this->getOption('web_hook_url', null, $url, true);
+
+        $key = $this->namespace . '_web_hook_url';
+        if (!$tmp = $this->modx->getObject('modSystemSetting', array('key' => $key))) {
+            $tmp = $this->modx->newObject('modSystemSetting');
+        }
+        $tmp->fromArray(array(
+            'xtype'     => 'textfield',
+            'namespace' => $this->namespace,
+            'area'      => $this->namespace . '_main',
+            'key'       => $key,
+            'value'     => $url,
+        ), '', true, true);
+        $tmp->save();
 
         return $url;
     }
@@ -953,8 +1078,8 @@ class modtelegram
      */
     protected function telegramGetApiUrl($mode = '', $sfx = 'bot')
     {
-        $url = $this->getOption('apiUrl', null, 'https://api.telegram.org/', true);
-        $key = $this->getOption('apiKey', null, '', true);
+        $url = $this->getOption('api_url', null, 'https://api.telegram.org/', true);
+        $key = $this->getOption('api_key', null, '', true);
         $url = rtrim($url, '/') . '/' . $sfx . $key . '/' . $mode;
 
         return $url;
@@ -968,8 +1093,8 @@ class modtelegram
      */
     protected function telegramGetFileUrl($path = '', $sfx = 'file/bot')
     {
-        $url = $this->getOption('apiUrl', null, 'https://api.telegram.org/', true);
-        $key = $this->getOption('apiKey', null, '', true);
+        $url = $this->getOption('api_url', null, 'https://api.telegram.org/', true);
+        $key = $this->getOption('api_key', null, '', true);
         $url = rtrim($url, '/') . '/' . $sfx . $key . '/' . $path;
 
         return $url;
@@ -1054,5 +1179,208 @@ class modtelegram
 
         return $data;
     }
+
+    /**
+     * @param string $email
+     * @param string $password
+     *
+     * @return modUser|null
+     */
+    public function getUserByEmailPassword($email = '', $password = '')
+    {
+        $user = null;
+        $q = $this->modx->newQuery($this->classModUser);
+        $q->innerJoin($this->classModUserProfile, $this->classModUserProfile,
+            "{$this->classModUser}.id = {$this->classModUserProfile}.internalKey");
+        $q->where(array(
+            "{$this->classModUser}.active"       => true,
+            "{$this->classModUserProfile}.email" => $email
+        ));
+        /** @var modUser $user */
+        if (
+            $user = $this->modx->getObject($this->classModUser, $q)
+            AND
+            $user->passwordMatches($password)
+        ) {
+            $user = $user->get('id');
+        }
+
+        return $user;
+    }
+
+    public function getAvailableManagerByUid($uid = '')
+    {
+        $manager = null;
+
+        // берем менеджера с минимальным кол-ом чатов
+        $q = $this->modx->newQuery($this->classManager);
+        $q->leftJoin($this->classChat, $this->classChat, "{$this->classChat}.mid = {$this->classManager}.id");
+
+        $q->where(array(
+            "{$this->classChat}.uid"       => $uid,
+            "{$this->classManager}.active" => 1,
+        ));
+        $q->orCondition(array(
+            "{$this->classManager}.active" => 1,
+        ));
+
+        $q->groupby("{$this->classManager}.id");
+        $q->sortby("COUNT({$this->classChat}.mid)", "ASC");
+
+        $manager = $this->modx->getValue($q->prepare());
+
+        return $manager;
+    }
+
+
+    public function processChatMessage(array $row = array())
+    {
+        $row['data'] = date($this->getOption('data_format', null, 'd.m.Y H:i'), $row['timestamp']);
+        $row['message'] = strip_tags(html_entity_decode($row['message'], ENT_QUOTES, 'UTF-8'));
+
+        return $row;
+    }
+
+    public function processTelegramMessage($row = '')
+    {
+        if (is_array($row)) {
+            $row = implode("\n", $row);
+        }
+
+        return $row;
+    }
+
+    public function sendMessage($message = '', $uid = '')
+    {
+        $message = $this->processTelegramMessage($message);
+        if (empty($message) OR empty($uid)) {
+            return false;
+        }
+
+        return $this->telegramSendMessage(array(
+            'chat_id' => $uid,
+            'text'    => $message,
+        ));
+    }
+
+
+    public function writeMessage(array $data = array())
+    {
+        $message = $this->modx->getOption('message', $data, '', true);
+        $message = $this->processTelegramMessage($message);
+
+        $uid = $this->modx->getOption('uid', $data);
+        $mid = $this->modx->getOption('mid', $data);
+        $from = $this->modx->getOption('from', $data);
+        $type = $this->modx->getOption('type', $data, 'text', true);
+
+        if (empty($message) OR empty($uid) OR empty($mid) OR empty($from) OR empty($type)) {
+            return false;
+        }
+        /** @var modTelegramMessage $msg */
+        $msg = $this->modx->newObject($this->classMessage);
+        $msg->fromArray(array(
+            'uid'     => $uid,
+            'mid'     => $mid,
+            'from'    => $from,
+            'type'    => $type,
+            'message' => $message
+        ), '', true, true);
+
+        return $msg->save();
+    }
+
+    public function writeManagerMessage(array $data = array())
+    {
+        $data = array_merge($data, array(
+            'from' => 'manager'
+        ));
+
+        return $this->writeMessage($data);
+    }
+
+    public function writeUserMessage(array $data = array())
+    {
+        $data = array_merge($data, array(
+            'from' => 'user'
+        ));
+
+        return $this->writeMessage($data);
+    }
+
+    public function getUserData($id = 0)
+    {
+        $tmp = array(
+            'cache_key' => 'managers/manager_' . $id,
+            'cacheTime' => 0,
+        );
+        if (!$data = $this->getCache($tmp)) {
+            $data = array();
+
+            if (!empty($id)) {
+                $q = $this->modx->newQuery($this->classUser);
+                $q->leftJoin($this->classModUser, $this->classModUser,
+                    "{$this->classModUser}.id = {$this->classUser}.user");
+                $q->leftJoin($this->classModUserProfile, $this->classModUserProfile,
+                    "{$this->classModUserProfile}.internalKey = {$this->classUser}.user");
+                $q->where(array(
+                    "{$this->classUser}.id" => $id,
+                ));
+
+                $q->select($this->modx->getSelectColumns($this->classUser, $this->classUser, '', array(),
+                    true));
+                $q->select($this->modx->getSelectColumns($this->classModUser, $this->classModUser, 'user_',
+                    array('username'),
+                    false));
+                $q->select($this->modx->getSelectColumns($this->classModUserProfile, $this->classModUserProfile,
+                    'profile_', array('sessionid'), true));
+
+                if ($q->prepare() AND $q->stmt->execute()) {
+                    $data = (array)$q->stmt->fetch(PDO::FETCH_ASSOC);
+                }
+            }
+            $this->setCache($data, $tmp);
+        }
+
+        return $data;
+    }
+
+    public function getManagerData($id = 0)
+    {
+        $tmp = array(
+            'cache_key' => 'managers/manager_' . $id,
+            'cacheTime' => 0,
+        );
+        if (!$data = $this->getCache($tmp)) {
+            $data = array();
+
+            if (!empty($id)) {
+                $q = $this->modx->newQuery($this->classManager);
+                $q->leftJoin($this->classModUser, $this->classModUser,
+                    "{$this->classModUser}.id = {$this->classManager}.user");
+                $q->leftJoin($this->classModUserProfile, $this->classModUserProfile,
+                    "{$this->classModUserProfile}.internalKey = {$this->classManager}.user");
+                $q->where(array(
+                    "{$this->classManager}.id" => $id,
+                ));
+
+                $q->select($this->modx->getSelectColumns($this->classManager, $this->classManager, '', array(),
+                    true));
+                $q->select($this->modx->getSelectColumns($this->classModUser, $this->classModUser, 'user_',
+                    array('username'),
+                    false));
+                $q->select($this->modx->getSelectColumns($this->classModUserProfile, $this->classModUserProfile,
+                    'profile_', array('sessionid'), true));
+
+                if ($q->prepare() AND $q->stmt->execute()) {
+                    $data = (array)$q->stmt->fetch(PDO::FETCH_ASSOC);
+                }
+            }
+            $this->setCache($data, $tmp);
+        }
+
+        return $data;
+    }
+
 
 }

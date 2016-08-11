@@ -3,41 +3,50 @@ $xpdo_meta_map['modTelegramMessage']= array (
   'package' => 'modtelegram',
   'version' => '1.1',
   'table' => 'modtelegram_messages',
-  'extends' => 'xPDOSimpleObject',
+  'extends' => 'xPDOObject',
   'fields' => 
   array (
-    'chat_id' => '',
-    'sender_id' => '',
-    'message_id' => 0,
+    'uid' => NULL,
+    'mid' => NULL,
+    'from' => '',
+    'type' => '',
     'message' => '',
-    'timestamp' => NULL,
+    'timestamp' => 0,
   ),
   'fieldMeta' => 
   array (
-    'chat_id' => 
+    'uid' => 
     array (
       'dbtype' => 'varchar',
-      'precision' => '255',
+      'precision' => '100',
+      'phptype' => 'string',
+      'null' => false,
+      'index' => 'pk',
+    ),
+    'mid' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '100',
+      'phptype' => 'string',
+      'null' => false,
+      'index' => 'pk',
+    ),
+    'from' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '100',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
+      'index' => 'pk',
     ),
-    'sender_id' => 
+    'type' => 
     array (
       'dbtype' => 'varchar',
-      'precision' => '255',
+      'precision' => '100',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
-    ),
-    'message_id' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'phptype' => 'integer',
-      'attributes' => 'unsigned',
-      'null' => false,
-      'default' => 0,
     ),
     'message' => 
     array (
@@ -48,22 +57,24 @@ $xpdo_meta_map['modTelegramMessage']= array (
     ),
     'timestamp' => 
     array (
-      'dbtype' => 'datetime',
-      'phptype' => 'datetime',
-      'null' => true,
+      'dbtype' => 'int',
+      'precision' => '20',
+      'phptype' => 'timestamp',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'indexes' => 
   array (
-    'chat_id' => 
+    'uid' => 
     array (
-      'alias' => 'chat_id',
+      'alias' => 'uid',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
       'columns' => 
       array (
-        'chat_id' => 
+        'uid' => 
         array (
           'length' => '',
           'collation' => 'A',
@@ -71,15 +82,15 @@ $xpdo_meta_map['modTelegramMessage']= array (
         ),
       ),
     ),
-    'sender_id' => 
+    'mid' => 
     array (
-      'alias' => 'sender_id',
+      'alias' => 'mid',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
       'columns' => 
       array (
-        'sender_id' => 
+        'mid' => 
         array (
           'length' => '',
           'collation' => 'A',
@@ -87,15 +98,31 @@ $xpdo_meta_map['modTelegramMessage']= array (
         ),
       ),
     ),
-    'message_id' => 
+    'from' => 
     array (
-      'alias' => 'message_id',
+      'alias' => 'from',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
       'columns' => 
       array (
-        'message_id' => 
+        'from' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'type' => 
+    array (
+      'alias' => 'type',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'type' => 
         array (
           'length' => '',
           'collation' => 'A',

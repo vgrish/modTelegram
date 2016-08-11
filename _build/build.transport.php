@@ -21,6 +21,7 @@ $sources = array(
     'build'         => $root . '_build/',
     'data'          => $root . '_build/data/',
     'resolvers'     => $root . '_build/resolvers/',
+    'validators'    => $root . '_build/validators/',
     'chunks'        => $root . 'core/components/' . PKG_NAME_LOWER . '/elements/chunks/',
     'snippets'      => $root . 'core/components/' . PKG_NAME_LOWER . '/elements/snippets/',
     'plugins'       => $root . 'core/components/' . PKG_NAME_LOWER . '/elements/plugins/',
@@ -176,10 +177,11 @@ $category = $modx->newObject('modCategory');
 $category->set('category', PKG_NAME);
 /* create category vehicle */
 $attr = array(
-    xPDOTransport::UNIQUE_KEY      => 'category',
-    xPDOTransport::PRESERVE_KEYS   => false,
-    xPDOTransport::UPDATE_OBJECT   => true,
-    xPDOTransport::RELATED_OBJECTS => true,
+    xPDOTransport::UNIQUE_KEY                    => 'category',
+    xPDOTransport::PRESERVE_KEYS                 => false,
+    xPDOTransport::UPDATE_OBJECT                 => true,
+    xPDOTransport::RELATED_OBJECTS               => true,
+    xPDOTransport::ABORT_INSTALL_ON_VEHICLE_FAIL => true,
 );
 
 /* add snippets */
@@ -236,6 +238,14 @@ if (defined('BUILD_PLUGIN_UPDATE')) {
 }
 
 $vehicle = $builder->createVehicle($category, $attr);
+
+foreach ($BUILD_VALIDATORS as $validate) {
+    if ($vehicle->validate('php', array('source' => $sources['validators'] . 'validate.' . $validate . '.php'))) {
+        $modx->log(modX::LOG_LEVEL_INFO, 'Added validate "' . $validate . '" to category.');
+    } else {
+        $modx->log(modX::LOG_LEVEL_INFO, 'Could not add validate "' . $validate . '" to category.');
+    }
+}
 
 /* now pack in resolvers */
 $vehicle->resolve('file', array(

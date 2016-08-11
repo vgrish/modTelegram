@@ -1,6 +1,6 @@
 <?php
 
-abstract class modTelegramResponseProcessor extends modProcessor
+abstract class modTelegramActionsProcessor extends modProcessor
 {
     /** @var  modtelegram $modtelegram */
     public $modtelegram;
@@ -36,17 +36,17 @@ abstract class modTelegramResponseProcessor extends modProcessor
             array_merge($this->properties, array('core_path' => $corePath))
         );
 
-        $propKey = $this->getProperty('propkey');
-        if (empty($propKey)) {
-            return $this->modtelegram->lexicon('err_propkey_ns');
-        }
+        $message = $this->modx->getOption('message', $this->getProperties(), array(), true);
+        $from = $this->modx->getOption('from', $message, array(), true);
+        $chat = $this->modx->getOption('chat', $message, array(), true);
 
-        $properties = $this->modtelegram->getProperties($propKey);
-        if (empty($properties)) {
-            return $this->modtelegram->lexicon('err_properties_ns');
-        }
-
-        $this->setProperties(array_merge($properties, $this->getProperties()));
+        $this->setProperties(array_merge(array(
+            'message_id' => $this->modx->getOption('message_id', $message),
+            'text'       => $this->modx->getOption('text', $message),
+            'date'       => $this->modx->getOption('date', $message),
+            'from'       => $this->modx->getOption('id', $from),
+            'chat'       => $this->modx->getOption('id', $chat),
+        ), $this->getProperties()));
         $this->modtelegram->initialize($this->getProperty('ctx', $this->modx->context->key), $this->getProperties());
 
         if (!$this->checkAction()) {
@@ -59,9 +59,8 @@ abstract class modTelegramResponseProcessor extends modProcessor
     protected function checkAction()
     {
         $this->action = $this->getProperty('action');
-        $this->action = end($this->modtelegram->explodeAndClean($this->action, '/'));
 
-        $actions = $this->getProperty('actions');
+        $actions = $this->modtelegram->getOption('web_hook_action', null);
         $actions = $this->modtelegram->explodeAndClean($actions);
 
         return in_array($this->action, $actions);
@@ -76,17 +75,6 @@ abstract class modTelegramResponseProcessor extends modProcessor
         return $this->modtelegram->sendMessage($message, $uid);
     }
 
-    public function sendRequest(array $data = array())
-    {
-        header('Content-Type: text/event-stream; charset=utf-8');
-        header('Cache-Control: no-cache');
-
-        $data = json_encode($data, true);
-        echo "data: {$data}";
-        echo "\n\n";
-        exit();
-    }
-
     public function failure($message = '', $data = array())
     {
         return $this->modtelegram->failure($message, $data);
@@ -97,7 +85,6 @@ abstract class modTelegramResponseProcessor extends modProcessor
         return $this->modtelegram->success($message, $data);
     }
 
-
 }
 
-return 'modtelegramResponseProcessor';
+return 'modTelegramActionsProcessor';
