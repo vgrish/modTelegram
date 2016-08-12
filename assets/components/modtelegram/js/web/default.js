@@ -195,7 +195,7 @@
 				dataType: 'json',
 				data: formData,
 				async: true,
-				cache: false,
+				cache: true,
 				contentType: false,
 				processData: false,
 				beforeSend: function () {
