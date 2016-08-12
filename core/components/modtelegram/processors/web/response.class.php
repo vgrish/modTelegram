@@ -93,8 +93,8 @@ abstract class modTelegramResponseProcessor extends modProcessor
             echo "id: " . $data['timestamp'];
         }
 
-        /*echo "\n";
-        echo "retry: " . $this->modtelegram->getMaxTime(10000);*/
+        echo "\n";
+        echo "retry: 1000";
 
         echo "\n\n";
 
@@ -106,7 +106,6 @@ abstract class modTelegramResponseProcessor extends modProcessor
     public function sendExit()
     {
         @session_write_close();
-        echo "\n\n";
         exit();
     }
 

@@ -29,7 +29,7 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
                 $data = array();
 
                 $limit = $this->getProperty('limit', 10);
-                $timestamp = $this->getProperty('timestamp', (int)$_SERVER["HTTP_LAST_EVENT_ID"]);
+                $timestamp = (int)$this->getProperty('timestamp', $_SERVER["HTTP_LAST_EVENT_ID"]);
                 if (!$timestamp) {
                     $limit = 0;
                 }
@@ -58,6 +58,11 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
                 }
 
                 $this->sendRequest($data);
+
+                if (!$timestamp) {
+                    $this->sendExit();
+                }
+
             }
 
             $this->sendExit();

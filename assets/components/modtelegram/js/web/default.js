@@ -253,7 +253,6 @@
 					modTelegram.helper.handleMessage(data, this);
 				};
 
-
 			},
 		},
 
