@@ -1396,4 +1396,10 @@ class modtelegram
         return $data;
     }
 
+    public function getMaxTime($mpx = 1)
+    {
+        $time = ini_get('max_execution_time') - 5;
+
+        return $time * $mpx;
+    }
 }

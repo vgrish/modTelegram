@@ -1,8 +1,5 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('error_reporting', -1);
-
 $stream = file_get_contents('php://input');
 $stream = json_decode($stream, true);
 
@@ -58,9 +55,6 @@ if (!in_array($action, $webHookAction)) {
 
 $stream['action'] = $action;
 $stream['options'] = $options;
-
-$modx->log(1, print_r($action, 1));
-$modx->log(1, print_r($stream, 1));
 
 $modtelegram->initialize($ctx);
 $modtelegram->config['processorsPath'] = $modtelegram->config['processorsPath'] . 'web/hook/';

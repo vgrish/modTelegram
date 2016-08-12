@@ -242,11 +242,18 @@
 					);
 				}
 
-				this.source.addEventListener('message', function(e) {
+				this.source.onerror = function(e) {
+					if (this.readyState == EventSource.CONNECTING) {
+						modTelegram.tools.log('reconect');
+					}
+				};
+
+				this.source.onmessage = function(e) {
 					var data = JSON.parse(e.data);
 					modTelegram.helper.handleMessage(data, this);
+				};
 
-				}, false);
+
 			},
 		},
 

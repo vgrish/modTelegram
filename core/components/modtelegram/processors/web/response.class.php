@@ -76,18 +76,36 @@ abstract class modTelegramResponseProcessor extends modProcessor
         return $this->modtelegram->sendMessage($message, $uid);
     }
 
-    public function sendRequest(array $data = array())
+    public function sendHeader()
     {
         header('Content-Type: text/event-stream; charset=utf-8');
         header('Transfer-Encoding: identity');
+        header('Access-Control-Allow-Origin: *');
         header('Cache-Control: no-cache');
         header('X-Accel-Buffering: no');
-        
+    }
+
+    public function sendRequest(array $data = array())
+    {
         echo "data: " . json_encode($data, true);
         if (isset($data['timestamp'])) {
             echo "\n";
             echo "id: " . $data['timestamp'];
         }
+
+        /*echo "\n";
+        echo "retry: " . $this->modtelegram->getMaxTime(10000);*/
+
+        echo "\n\n";
+
+        @ob_flush();
+        flush();
+        sleep(3);
+    }
+
+    public function sendExit()
+    {
+        @session_write_close();
         echo "\n\n";
         exit();
     }
