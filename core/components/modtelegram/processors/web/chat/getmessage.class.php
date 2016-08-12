@@ -40,9 +40,10 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
                 }
             }
 
-            $data['user'] = $this->modtelegram->getUserData($chat->getUser());
-            $data['manager'] = $this->modtelegram->getManagerData($chat->getManager());
-
+            if (!empty($data['messages'])) {
+                $data['user'] = $this->modtelegram->getUserData($chat->getUser());
+                $data['manager'] = $this->modtelegram->getManagerData($chat->getManager());
+            }
         }
 
         return $this->sendRequest($data);
