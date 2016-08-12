@@ -1237,22 +1237,26 @@ class modtelegram
     {
         $row['data'] = date($this->getOption('data_format', null, 'd.m.Y H:i'), $row['timestamp']);
         $row['message'] = strip_tags(html_entity_decode($row['message'], ENT_QUOTES, 'UTF-8'));
+        $row['sender'] = $this->lexicon('default_' . $row['from']);
 
         return $row;
     }
 
-    public function processTelegramMessage($row = '')
+    public function processTelegramMessage(array $row = array())
     {
-        if (is_array($row)) {
-            $row = implode("\n", $row);
-        }
+        $row['data'] = date($this->getOption('data_format', null, 'd.m.Y H:i'), $row['timestamp']);
+        $row['message'] = strip_tags(html_entity_decode($row['message'], ENT_QUOTES, 'UTF-8'));
+        $row['sender'] = $this->lexicon('default_' . $row['from']);
 
         return $row;
     }
+
 
     public function sendMessage($message = '', $uid = '')
     {
-        $message = $this->processTelegramMessage($message);
+        if (is_array($message)) {
+            $message = implode("\n", $message);
+        }
         if (empty($message) OR empty($uid)) {
             return false;
         }
@@ -1267,7 +1271,9 @@ class modtelegram
     public function writeMessage(array $data = array())
     {
         $message = $this->modx->getOption('message', $data, '', true);
-        $message = $this->processTelegramMessage($message);
+        if (is_array($message)) {
+            $message = implode("\n", $message);
+        }
 
         $uid = $this->modx->getOption('uid', $data);
         $mid = $this->modx->getOption('mid', $data);
@@ -1340,7 +1346,7 @@ class modtelegram
                 }
 
                 if (empty($data['user_username'])) {
-                    $data['user_username'] = $this->lexicon('default_user_username');
+                    $data['user_username'] = $this->lexicon('default_user');
                 }
             }
             $this->setCache($data, $tmp);
@@ -1379,11 +1385,15 @@ class modtelegram
                 if ($q->prepare() AND $q->stmt->execute()) {
                     $data = (array)$q->stmt->fetch(PDO::FETCH_ASSOC);
                 }
+
+                if (empty($data['user_username'])) {
+                    $data['user_username'] = $this->lexicon('default_manager');
+                }
             }
             $this->setCache($data, $tmp);
         }
 
         return $data;
     }
-    
+
 }

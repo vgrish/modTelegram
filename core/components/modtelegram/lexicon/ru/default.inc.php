@@ -29,7 +29,12 @@ $_lang['modtelegram_description_action_story'] = '[[+action]] - получить
 // info
 
 $_lang['modtelegram_chatin'] = '/chatin_[[+uid]]';
-$_lang['modtelegram_default_user_username'] = 'Пользователь';
+$_lang['modtelegram_history'] = '[[+sender]]: [[+data]] - [[+message]]';
+$_lang['modtelegram_status'] = '[[+id]]: [[+active]]';
+
+
+$_lang['modtelegram_default_user'] = 'Пользователь';
+$_lang['modtelegram_default_manager'] = 'Менеджер';
 
 $_lang['modtelegram_hook_info_success_login'] = 'Вы успешно вошли в систему';
 $_lang['modtelegram_hook_info_failure_login'] = 'Ошибка входа';
@@ -43,6 +48,14 @@ $_lang['modtelegram_hook_info_failure_chatin'] = 'Ошибка подключе�
 
 $_lang['modtelegram_hook_info_success_chatout'] = 'Вы успешно вышли из чата';
 $_lang['modtelegram_hook_info_failure_chatout'] = 'Ошибка отключения чата';
+
+$_lang['modtelegram_hook_info_success_history'] = 'История чата';
+$_lang['modtelegram_hook_info_failure_history'] = 'Ошибка получения истории';
+
+$_lang['modtelegram_hook_info_success_status'] = 'Статус';
+$_lang['modtelegram_hook_info_failure_status'] = 'Ошибка получения статуса';
+
+
 
 
 $_lang['modtelegram_chatin_manager_info_failure_initialize'] = '';

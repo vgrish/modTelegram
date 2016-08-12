@@ -1,0 +1,50 @@
+<?php
+
+require_once dirname(dirname(__FILE__)) . '/actions.class.php';
+
+class modHookHistoryProcessor extends modTelegramActionsProcessor
+{
+    function process()
+    {
+        @list($uid) = $this->getProperty('options', array());
+
+        /** @var modTelegramChat $chat */
+        if ($chat = $this->modx->getObject($this->classChat, array(
+            'uid' => $uid,
+            'mid' => $this->getProperty('from'),
+        ))
+        ) {
+            $q = $this->modx->newQuery($this->classMessage);
+            $q->where(array(
+                'uid'  => $chat->getUser(),
+                'mid'  => $chat->getManager(),
+                'type' => 'text'
+            ));
+            $q->select($this->modx->getSelectColumns($this->classMessage, $this->classMessage));
+            $q->sortby("{$this->classMessage}.timestamp", "ASC");
+            $q->limit($this->getProperty('limit', 0));
+
+            $message = array();
+            $message[] = $this->modtelegram->lexicon('hook_info_success_' . $this->action);
+
+            if ($q->prepare() AND $q->stmt->execute()) {
+                while ($row = $q->stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $row = $this->modtelegram->processTelegramMessage($row);
+                    $message[] = $this->modtelegram->lexicon('history', $row);
+                }
+            }
+
+            $this->sendMessage($message);
+
+            return $this->success('', $message);
+        }
+
+        $message = $this->modtelegram->lexicon('hook_info_failure_' . $this->action);
+        $this->sendMessage($message);
+
+        return $this->failure('', $message);
+    }
+
+}
+
+return 'modHookHistoryProcessor';
