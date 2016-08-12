@@ -301,11 +301,6 @@
 
 	modTelegram.initialize = function () {
 		modTelegram.setup();
-
-		if (!jQuery.SSE) {
-			document.writeln('<script src="' + modTelegramConfig.assetsUrl + 'vendor/sse/jquery.sse.min.js"><\/script>');
-		}
-
 		modTelegram.helper.create();
 
 		modTelegram.$doc.on('click touchend', modTelegram.selector.helperButton, function (e) {

@@ -89,7 +89,7 @@
 }
 
 .modtelegram-helper-chat-body {
-	height: 70%;
+	height: 75%;
 	background-color: #fff;
 	overflow-y: scroll;
 }
@@ -98,7 +98,7 @@
 	text-align: center;
 	color: #fff;
 	padding: 10px;
-	font-size: 12px;
+	font-size: 8pt;
 }
 
 
@@ -131,8 +131,6 @@
 
 .modtelegram-helper-chat-input {
 	width: 100%;
-	position: absolute;
-	bottom: 10%;
 }
 
 .modtelegram-helper-chat-input textarea {

@@ -8,8 +8,12 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
     {
         $data = array();
 
+        $limit = $this->getProperty('limit', 10);
         $timestamp = $this->getProperty('timestamp', (int)$_SERVER["HTTP_LAST_EVENT_ID"]);
-        
+        if (!$timestamp) {
+            $limit = 0;
+        }
+
         /** @var modTelegramUser $manager */
         /** @var modTelegramChat $chat */
         if (
@@ -31,7 +35,7 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
 
             $q->select($this->modx->getSelectColumns($this->classMessage, $this->classMessage));
             $q->sortby("{$this->classMessage}.timestamp", "ASC");
-            $q->limit($this->getProperty('limit', 10));
+            $q->limit($limit);
 
             if ($q->prepare() AND $q->stmt->execute()) {
                 while ($row = $q->stmt->fetch(PDO::FETCH_ASSOC)) {
