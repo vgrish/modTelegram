@@ -8,8 +8,6 @@
 
 	modTelegram.setup = function () {
 
-		modTelegram.timeout = 60000;
-
 		modTelegram.prefix = modTelegramConfig.prefix || 'modtelegram-';
 
 		modTelegram.classActive = 'modtelegram-active';
@@ -25,8 +23,10 @@
 		modTelegram.selector.helperChatWelcome = '.modtelegram-helper-chat-welcome';
 		modTelegram.selector.helperChatInitialize = '.modtelegram-helper-chat-initialize';
 		modTelegram.selector.helperChatBody = '.modtelegram-helper-chat-body';
-		modTelegram.selector.helperChatInput = '.modtelegram-helper-chat-input';
-		modTelegram.selector.helperChatMessage = '.modtelegram-helper-chat-input [name="message"]';
+		modTelegram.selector.helperChatInputText = '.modtelegram-helper-chat-input-text';
+		modTelegram.selector.helperChatInputAttach = '.modtelegram-helper-chat-input-attach';
+		modTelegram.selector.helperChatMessage = '.modtelegram-helper-chat-input-text [name="message"]';
+		modTelegram.selector.helperChatAttach = '.modtelegram-helper-chat-input-attach [name="file"]';
 
 		modTelegram.helper.timestamp = 0;
 
@@ -34,7 +34,7 @@
 			type: 'popup',
 			template: 'base',
 			position: 'rb',
-			attach: false,
+			attach: false,//true,
 		};
 
 		modTelegram.$doc = $(document);
@@ -79,11 +79,25 @@
 					'<div class="modtelegram-helper-chat-body {type} {template} {position}">',
 					'</div>',
 
-					'<div class="modtelegram-helper-chat-input modtelegram-hidden">',
+					'<div class="modtelegram-helper-chat-inputs">',
+
+					'<div class="modtelegram-helper-chat-input-text modtelegram-hidden">',
 					'<form class="modtelegram-helper-form">',
 					'<textarea name="message" placeholder="enter message..."></textarea>',
 					'<button type="submit" value="chat/sendmessage" style="display:none;">send</button>',
 					'</form>',
+					'</div>',
+
+					'<div class="modtelegram-helper-chat-input-attach modtelegram-hidden">',
+					'<form class="modtelegram-helper-form" enctype="multipart/form-data">',
+					'<label class="modtelegram-helper-chat-input-attach-label">',
+					'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M13.8 39.6c-1.5 0-3.1-.6-4.2-1.8-2.3-2.3-2.3-6.1 0-8.5l17-17c3.1-3.1 8.2-3.1 11.3 0 3.1 3.1 3.1 8.2 0 11.3L25.1 36.4 23.7 35l12.7-12.7c2.3-2.3 2.3-6.1 0-8.5-2.3-2.3-6.1-2.3-8.5 0l-17 17c-.8.8-1.2 1.8-1.2 2.8 0 1.1.4 2.1 1.2 2.8 1.6 1.6 4.1 1.6 5.7 0l12.7-12.7c.8-.8.8-2 0-2.8-.8-.8-2-.8-2.8 0L18 29.3l-1.4-1.4 8.5-8.5c1.6-1.6 4.1-1.6 5.7 0 1.6 1.6 1.6 4.1 0 5.7L18 37.8c-1.1 1.2-2.7 1.8-4.2 1.8z"/></svg>',
+					'<input type="file" name="file" style="display: none;">',
+					'</label>',
+					'<button type="submit" value="chat/attachfile" style="display:none;">send attach</button>',
+					'</form>',
+					'</div>',
+
 					'</div>',
 
 					'<div class="modtelegram-helper-chat-footer {type} {template} {position}">',
@@ -169,21 +183,21 @@
 
 		action: function (form, button) {
 			var action = $(button).prop('value');
+			var formData = new FormData($(form)[0]);
 
-			var formData = $(form).serializeArray();
-			formData = modTelegram.tools.getDataFromSerializedArray(formData);
+			formData.append('action', action);
+			formData.append('propkey', modTelegramConfig.propkey);
+			formData.append('ctx', modTelegramConfig.ctx);
 
 			$.ajax({
 				type: 'POST',
 				url: modTelegramConfig.actionUrl,
 				dataType: 'json',
-				data: $.extend({}, formData, {
-					action: action,
-					propkey: modTelegramConfig.propkey,
-					ctx: modTelegramConfig.ctx
-				}),
+				data: formData,
 				async: true,
-				timeout: modTelegram.timeout,
+				cache: false,
+				contentType: false,
+				processData: false,
 				beforeSend: function () {
 					$(form).find(modTelegram.selector.helperSubmit).attr('disabled', 'disabled');
 					return true;
@@ -196,12 +210,19 @@
 							case 'chat/initialize':
 								modTelegram.tools.hide(modTelegram.selector.helperChatWelcome);
 								modTelegram.tools.show(modTelegram.selector.helperChatBody);
-								modTelegram.tools.show(modTelegram.selector.helperChatInput);
+								modTelegram.tools.show(modTelegram.selector.helperChatInputText);
+
+								if (modTelegram.helper.config.attach) {
+									modTelegram.tools.show(modTelegram.selector.helperChatInputAttach);
+								}
 
 								modTelegram.helper.listener.init();
 								break;
 							case 'chat/sendmessage':
 								modTelegram.tools.clear(modTelegram.selector.helperChatMessage);
+								break;
+							case 'chat/sendfile':
+
 								break;
 							default:
 								break;
@@ -339,6 +360,12 @@
 			return false;
 		});
 
+		modTelegram.$doc.on('change', modTelegram.selector.helperChatAttach, function (e) {
+			$(this).parents(modTelegram.selector.helperForm).submit();
+			e.preventDefault();
+			return false;
+		});
+
 		modTelegram.$doc.on('keydown', modTelegram.selector.helperForm, function (e) {
 			if (
 				(e.ctrlKey || e.metaKey) && (e.keyCode == 13 || e.keyCode == 10)
@@ -415,16 +442,6 @@
 
 		empty: function (value) {
 			return (typeof(value) == 'undefined' || value == 0 || value === null || value === false || (typeof(value) == 'string' && value.replace(/\s+/g, '') == '') || (typeof(value) == 'object' && value.length == 0));
-		},
-
-		getDataFromSerializedArray: function (arr) {
-			var data = {};
-			$.each(arr, function () {
-				data[this.name] = this.value;
-
-			});
-
-			return data;
 		},
 
 		bleep: function () {

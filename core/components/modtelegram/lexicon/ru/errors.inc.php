@@ -16,5 +16,8 @@ $_lang['modtelegram_err_properties_ns'] = 'Не указаны свойства 
 $_lang['modtelegram_err_action_un'] = 'Неизвестный ключ (action)';
 $_lang['modtelegram_err_chunk_ns'] = 'Не указан чанк для обработки';
 
-
+$_lang['modtelegram_err_file_type'] = 'Неправильный тип файла';
+$_lang['modtelegram_err_file_extension'] = 'Неправильное расширение файла';
+$_lang['modtelegram_err_file_size'] = 'Файл больше допустимого размера';
+$_lang['modtelegram_err_file_ns'] = 'Ошибка обработки указанного файла';
 

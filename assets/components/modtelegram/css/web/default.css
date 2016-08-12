@@ -2,7 +2,7 @@
 	display: none!important;
 }
 .modtelegram-active {
-	display: block!important;
+	display: block;
 }
 
 
@@ -120,6 +120,11 @@
 	float: right;
 	color: #ccc;
 }
+.modtelegram-helper-message-text {
+	word-wrap: break-word;
+	margin: 0;
+}
+
 
 .modtelegram-helper-message.modtelegram-from-user {
 	float: left;
@@ -129,11 +134,52 @@
 }
 
 
-.modtelegram-helper-chat-input {
+.modtelegram-helper-chat-inputs {
+	display: table;
 	width: 100%;
+	border: 1px solid #ddd;
+	background: #fff;
 }
 
-.modtelegram-helper-chat-input textarea {
+.modtelegram-helper-chat-input-text.modtelegram-active {
+	display: table-cell;
+	width: 100%;
+	vertical-align: middle;
+}
+.modtelegram-helper-chat-input-attach.modtelegram-active {
+	display: table-cell;
+	width: 100%;
+	vertical-align: middle;
+}
+
+.modtelegram-helper-chat-input-text textarea {
+	resize: none;
+	border: 0;
+	padding: 0.3em 0.5em;
 	width: 100%;
 }
+.modtelegram-helper-chat-input-text textarea:focus {
+	outline: none;
+}
+
+label.modtelegram-helper-chat-input-attach-label {
+	display: table-cell;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.modtelegram-helper-chat-input-attach-label svg {
+	width: 2em;
+	height: 2em;
+	fill: currentColor;
+	vertical-align: middle;
+	pointer-events: none;
+	-webkit-transition: fill 0.2s linear;
+	transition: fill 0.2s linear;
+}
+
+
+
+
+
 
