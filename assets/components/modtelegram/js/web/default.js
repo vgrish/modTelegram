@@ -266,9 +266,10 @@
 			return modTelegram.helper.timestamp = timestamp;
 		},
 
-		scrollMessage: function (height) {
+		scrollMessage: function () {
 			var wrapper = $(modTelegram.selector.helperChatBody);
-			wrapper.scrollTop(wrapper.scrollTop() + height + 10);
+			var h = wrapper[0].scrollHeight;
+			wrapper.scrollTop(h);
 		},
 
 		handleMessage: function (data) {
@@ -294,9 +295,9 @@
 							break;
 					}
 
-					var msg = $(modTelegram.helper.template.get('message', row.type, row)).appendTo(wrapper);
+					wrapper.append(modTelegram.helper.template.get('message', row.type, row));
 
-					modTelegram.helper.scrollMessage(msg.outerHeight());
+					modTelegram.helper.scrollMessage();
 					modTelegram.helper.setTimestamp(row.timestamp);
 					modTelegram.tools.bleep();
 				}
@@ -313,6 +314,7 @@
 		modTelegram.$doc.on('click touchend', modTelegram.selector.helperButton, function (e) {
 			modTelegram.tools.hide(modTelegram.selector.helperButton);
 			modTelegram.tools.show(modTelegram.selector.helperChat);
+			modTelegram.helper.scrollMessage();
 			e.preventDefault();
 			return false;
 		});
