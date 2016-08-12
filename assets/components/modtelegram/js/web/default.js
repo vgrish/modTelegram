@@ -243,8 +243,16 @@
 				}
 
 				this.source.onerror = function(e) {
-					if (this.readyState == EventSource.CONNECTING) {
-						modTelegram.tools.log('reconect');
+
+					switch (this.readyState) {
+						case EventSource.CONNECTING:
+							modTelegram.tools.log('reconect');
+							break;
+						case EventSource.CLOSED:
+							modTelegram.tools.log('reinit');
+							modTelegram.helper.listener.init();
+							break;
+
 					}
 				};
 
