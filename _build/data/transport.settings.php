@@ -26,7 +26,7 @@ $tmp = array(
     ),
 
     //временные
-    'assets_path'      => array(
+   /* 'assets_path'      => array(
         'value' => '{base_path}modtelegram/assets/components/modtelegram/',
         'xtype' => 'textfield',
         'area'  => 'modtelegram_temp',
@@ -40,7 +40,7 @@ $tmp = array(
         'value' => '{base_path}modtelegram/core/components/modtelegram/',
         'xtype' => 'textfield',
         'area'  => 'modtelegram_temp',
-    ),
+    ),*/
 
 
     /*

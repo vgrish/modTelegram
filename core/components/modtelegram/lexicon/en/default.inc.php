@@ -23,8 +23,9 @@ $_lang['modtelegram_description_action_login'] = '[[+action]] - авторизо
 $_lang['modtelegram_description_action_logout'] = '[[+action]] - выйти из системы';
 $_lang['modtelegram_description_action_chatin'] = '[[+action]] - подключить чат';
 $_lang['modtelegram_description_action_chatout'] = '[[+action]] - отключить чат';
-$_lang['modtelegram_description_action_story'] = '[[+action]] - получить историю чата';
-
+$_lang['modtelegram_description_action_history'] = '[[+action]] - получить историю чата';
+$_lang['modtelegram_description_action_reply'] = '[[+action]] - написать в чат';
+$_lang['modtelegram_description_action_status'] = '[[+action]] - статус';
 
 // info
 
