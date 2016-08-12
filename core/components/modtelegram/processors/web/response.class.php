@@ -100,7 +100,7 @@ abstract class modTelegramResponseProcessor extends modProcessor
 
         @ob_flush();
         flush();
-        sleep(3);
+        sleep(1);
     }
 
     public function sendExit()
