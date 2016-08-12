@@ -2,7 +2,7 @@
 
 require_once dirname(dirname(__FILE__)) . '/response.class.php';
 
-class modChatInitializeProcessor extends modTelegramResponseProcessor
+class modChatGetMessageProcessor extends modTelegramResponseProcessor
 {
 
     function process()
@@ -73,4 +73,4 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
     }
 }
 
-return 'modChatInitializeProcessor';
+return 'modChatGetMessageProcessor';
