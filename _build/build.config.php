@@ -49,7 +49,7 @@ define('BUILD_PLUGIN_STATIC', false);
 
 
 $BUILD_VALIDATORS = array(
-    'assets.vendors',
+    //'assets.vendors',
 );
 
 $BUILD_RESOLVERS = array(

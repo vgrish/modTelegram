@@ -4,7 +4,7 @@ require_once dirname(dirname(__FILE__)) . '/response.class.php';
 
 class modChatInitializeProcessor extends modTelegramResponseProcessor
 {
-   
+
     function process()
     {
         $data = array();
@@ -16,7 +16,7 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
             AND
             $user = $this->modx->getObject($this->classUser, array(
                 'id'   => session_id(),
-                'user' => $this->modx->user->id
+                'user' => $this->modx->user->isAuthenticated($this->modx->context->key) ? $this->modx->user->id : 0
             ))
             AND
             $chat = $this->modx->getObject($this->classChat, array(

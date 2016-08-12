@@ -26,6 +26,6 @@ class modHookReplayProcessor extends modTelegramActionsProcessor
         return $this->failure('', $message);
     }
 
-}
+} 
 
 return 'modHookReplayProcessor';

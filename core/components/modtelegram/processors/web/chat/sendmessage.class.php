@@ -7,6 +7,7 @@ class modChatSendMessageProcessor extends modTelegramResponseProcessor
     function process()
     {
         $data = array();
+
         $message = $this->getProperty('message', '');
 
         /** @var modTelegramUser $user */
@@ -18,13 +19,21 @@ class modChatSendMessageProcessor extends modTelegramResponseProcessor
             AND
             $chat = $this->modx->getObject($this->classChat, array(
                 'uid'    => session_id(),
-                'active' => true,
             ))
             AND
             !empty($message)
         ) {
 
-            $chat->sendMessage($message);
+            if (!$chat->isActive()) {
+                $chat->sendMessage(array(
+                    $this->modtelegram->lexicon('modtelegram_chatin', array('uid' => session_id())),
+                    $message
+                ));
+            }
+            else {
+                $chat->sendMessage($message);
+            }
+
             $this->modtelegram->writeUserMessage(array(
                 'uid'     => $chat->getUser(),
                 'mid'     => $chat->getManager(),

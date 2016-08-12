@@ -6,12 +6,10 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
 {
     function process()
     {
-        //set_time_limit(0);
-
         $data = array();
 
-        $this->modx->log(1, print_r($this->getProperties(), 1));
-
+        $timestamp = $this->getProperty('timestamp', (int)$_SERVER["HTTP_LAST_EVENT_ID"]);
+        
         /** @var modTelegramUser $manager */
         /** @var modTelegramChat $chat */
         if (
@@ -20,8 +18,7 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
             ))
             AND
             $chat = $this->modx->getObject($this->classChat, array(
-                'uid'    => session_id(),
-                'active' => true,
+                'uid' => session_id(),
             ))
         ) {
 
@@ -29,7 +26,7 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
             $q->where(array(
                 'uid'         => $chat->getUser(),
                 'mid'         => $chat->getManager(),
-                'timestamp:>' => $this->getProperty('timestamp', 0)
+                'timestamp:>' => $timestamp
             ));
 
             $q->select($this->modx->getSelectColumns($this->classMessage, $this->classMessage));
@@ -39,6 +36,7 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
             if ($q->prepare() AND $q->stmt->execute()) {
                 while ($row = $q->stmt->fetch(PDO::FETCH_ASSOC)) {
                     $data['messages'][] = $this->modtelegram->processChatMessage($row);
+                    $data['timestamp'] = $row['timestamp'];
                 }
             }
 
@@ -46,8 +44,6 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
             $data['manager'] = $this->modtelegram->getManagerData($chat->getManager());
 
         }
-
-        $this->modx->log(1, print_r($data, 1));
 
         return $this->sendRequest($data);
     }

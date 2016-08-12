@@ -79,10 +79,15 @@ abstract class modTelegramResponseProcessor extends modProcessor
     public function sendRequest(array $data = array())
     {
         header('Content-Type: text/event-stream; charset=utf-8');
+        header('Transfer-Encoding: identity');
         header('Cache-Control: no-cache');
-
-        $data = json_encode($data, true);
-        echo "data: {$data}";
+        header('X-Accel-Buffering: no');
+        
+        echo "data: " . json_encode($data, true);
+        if (isset($data['timestamp'])) {
+            echo "\n";
+            echo "id: " . $data['timestamp'];
+        }
         echo "\n\n";
         exit();
     }

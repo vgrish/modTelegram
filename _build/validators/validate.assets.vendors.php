@@ -20,10 +20,10 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 
         $vendors = array(
             array(
-                'sse',
+                /*'sse',
                 'sse',
                 'https://github.com/byjg/jquery-sse/archive/master.zip',
-                MODX_ASSETS_PATH . 'components/modtelegram/vendor/'
+                MODX_ASSETS_PATH . 'components/modtelegram/vendor/'*/
             ),
         );
 

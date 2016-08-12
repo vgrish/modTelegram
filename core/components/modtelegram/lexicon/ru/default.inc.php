@@ -5,7 +5,6 @@ include_once 'setting.inc.php';
 
 $_lang['modtelegram'] = 'modtelegram';
 
-
 // actions
 
 $_lang['modtelegram_actions'] = 'Действия';
@@ -29,6 +28,8 @@ $_lang['modtelegram_description_action_story'] = '[[+action]] - получить
 
 // info
 
+$_lang['modtelegram_chatin'] = '/chatin_[[+uid]]';
+$_lang['modtelegram_default_user_username'] = 'Пользователь';
 
 $_lang['modtelegram_hook_info_success_login'] = 'Вы успешно вошли в систему';
 $_lang['modtelegram_hook_info_failure_login'] = 'Ошибка входа';

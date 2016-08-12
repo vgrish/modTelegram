@@ -1311,7 +1311,7 @@ class modtelegram
     public function getUserData($id = 0)
     {
         $tmp = array(
-            'cache_key' => 'managers/manager_' . $id,
+            'cache_key' => 'users/user_' . $id,
             'cacheTime' => 0,
         );
         if (!$data = $this->getCache($tmp)) {
@@ -1337,6 +1337,10 @@ class modtelegram
 
                 if ($q->prepare() AND $q->stmt->execute()) {
                     $data = (array)$q->stmt->fetch(PDO::FETCH_ASSOC);
+                }
+
+                if (empty($data['user_username'])) {
+                    $data['user_username'] = $this->lexicon('default_user_username');
                 }
             }
             $this->setCache($data, $tmp);
@@ -1381,6 +1385,5 @@ class modtelegram
 
         return $data;
     }
-
-
+    
 }

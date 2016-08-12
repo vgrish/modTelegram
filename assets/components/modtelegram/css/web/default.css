@@ -112,10 +112,13 @@
 }
 .modtelegram-helper-message-header {
 	font-size: 8pt;
-	color: #ccc;
 }
 .modtelegram-helper-message-footer {
 	font-size: 8pt;
+}
+.modtelegram-helper-message-data {
+	float: right;
+	color: #ccc;
 }
 
 .modtelegram-helper-message.modtelegram-from-user {
