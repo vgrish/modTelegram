@@ -1163,8 +1163,6 @@ class modtelegram
     {
         $mode = strtolower($mode);
 
-        $this->modx->log(1, print_r($mode, 1));
-
         switch ($mode) {
             case '':
                 break;
@@ -1208,6 +1206,11 @@ class modtelegram
         return $user;
     }
 
+    /**
+     * @param string $uid
+     *
+     * @return mixed|null
+     */
     public function getAvailableManagerByUid($uid = '')
     {
         $manager = null;
@@ -1233,6 +1236,11 @@ class modtelegram
     }
 
 
+    /**
+     * @param array $row
+     *
+     * @return array
+     */
     public function processChatMessage(array $row = array())
     {
         $row['data'] = date($this->getOption('data_format', null, 'd.m.Y H:i'), $row['timestamp']);
@@ -1242,6 +1250,11 @@ class modtelegram
         return $row;
     }
 
+    /**
+     * @param array $row
+     *
+     * @return array
+     */
     public function processTelegramMessage(array $row = array())
     {
         $row['data'] = date($this->getOption('data_format', null, 'd.m.Y H:i'), $row['timestamp']);
@@ -1252,6 +1265,12 @@ class modtelegram
     }
 
 
+    /**
+     * @param string $message
+     * @param string $uid
+     *
+     * @return array|bool
+     */
     public function sendMessage($message = '', $uid = '')
     {
         if (is_array($message)) {
@@ -1268,6 +1287,11 @@ class modtelegram
     }
 
 
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
     public function writeMessage(array $data = array())
     {
         $message = $this->modx->getOption('message', $data, '', true);
@@ -1296,6 +1320,11 @@ class modtelegram
         return $msg->save();
     }
 
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
     public function writeManagerMessage(array $data = array())
     {
         $data = array_merge($data, array(
@@ -1305,6 +1334,11 @@ class modtelegram
         return $this->writeMessage($data);
     }
 
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
     public function writeUserMessage(array $data = array())
     {
         $data = array_merge($data, array(
@@ -1314,6 +1348,11 @@ class modtelegram
         return $this->writeMessage($data);
     }
 
+    /**
+     * @param int $id
+     *
+     * @return array|mixed
+     */
     public function getUserData($id = 0)
     {
         $tmp = array(
@@ -1355,6 +1394,11 @@ class modtelegram
         return $data;
     }
 
+    /**
+     * @param int $id
+     *
+     * @return array|mixed
+     */
     public function getManagerData($id = 0)
     {
         $tmp = array(
@@ -1396,6 +1440,11 @@ class modtelegram
         return $data;
     }
 
+    /**
+     * @param int $mpx
+     *
+     * @return string
+     */
     public function getMaxTime($mpx = 1)
     {
         $time = ini_get('max_execution_time') - 5;
