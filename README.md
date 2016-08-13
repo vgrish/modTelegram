@@ -58,3 +58,9 @@ $modtelegram->telegramSetWebHook();
 ```
 /reply_message
 ```
+
+* **location** получить локацию
+
+```
+/location
+```
