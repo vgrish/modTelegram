@@ -11,22 +11,37 @@ class modChatAttachFileProcessor extends modTelegramResponseProcessor
     {
         $data = array();
 
-        $checkFile = $this->checkFile();
-        if ($checkFile !== true) {
-            return $this->failure($checkFile, $data);
-        }
+        /** @var modTelegramUser $user */
+        /** @var modTelegramChat $chat */
+        if (
+            $user = $this->modx->getObject($this->classUser, array(
+                'id' => session_id(),
+            ))
+            AND
+            $chat = $this->modx->getObject($this->classChat, array(
+                'uid' => session_id(),
+            ))
+            AND
+            $checkFile = $this->checkFile()
+        ) {
 
-        if (empty($this->data)) {
-            return $this->failure('err_file_ns', $data);
-        }
+            $tmp = $this->modx->getOption('tmp_name', $this->data, '', true);
+            $name = $this->modx->getOption('hash', $this->data, session_id(), true);
+            $type = $this->modx->getOption('type', $this->data, '', true);
+            $size = $this->modx->getOption('size', $this->data, 0, true);
 
-        $tmp = $this->modx->getOption('tmp_name', $this->data, '', true);
-        $name = $this->modx->getOption('hash', $this->data, session_id(), true);
-        $type = $this->modx->getOption('type', $this->data, '', true);
-        $size = $this->modx->getOption('size', $this->data, 0, true);
+            if ($size > 10240000) {
+                return $this->failure('err_file_ns', $data);
+            }
 
-        if ($size > 10240000) {
-            return $this->failure('err_file_ns', $data);
+            file_put_contents(MODX_BASE_PATH . 'tmp/' . $name . '.' . $type, file_get_contents($tmp));
+
+            $this->modtelegram->telegramSendDocument(array(
+                'chat_id'   => $chat->getManager(),
+                'from_path' => 'tmp/' . $name . '.' . $type,
+            ));
+
+            return $this->success('', $data);
         }
 
         return $this->failure('', $data);

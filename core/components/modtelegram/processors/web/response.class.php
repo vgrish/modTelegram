@@ -100,11 +100,16 @@ abstract class modTelegramResponseProcessor extends modProcessor
 
         @ob_flush();
         flush();
-        sleep(1);
+        @session_write_close();
+        //sleep(1);
     }
 
     public function sendExit()
     {
+        echo "\n";
+        echo "retry: 3000";
+        echo "\n\n";
+        @ob_flush();
         @session_write_close();
         exit();
     }

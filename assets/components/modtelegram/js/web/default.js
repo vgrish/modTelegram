@@ -34,7 +34,7 @@
 			type: 'popup',
 			template: 'base',
 			position: 'rb',
-			attach: false,//true,
+			attach: true,
 		};
 
 		modTelegram.$doc = $(document);
@@ -90,8 +90,7 @@
 
 					'<div class="modtelegram-helper-chat-input-attach modtelegram-hidden">',
 					'<form class="modtelegram-helper-form" enctype="multipart/form-data">',
-					'<label class="modtelegram-helper-chat-input-attach-label">',
-					'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M13.8 39.6c-1.5 0-3.1-.6-4.2-1.8-2.3-2.3-2.3-6.1 0-8.5l17-17c3.1-3.1 8.2-3.1 11.3 0 3.1 3.1 3.1 8.2 0 11.3L25.1 36.4 23.7 35l12.7-12.7c2.3-2.3 2.3-6.1 0-8.5-2.3-2.3-6.1-2.3-8.5 0l-17 17c-.8.8-1.2 1.8-1.2 2.8 0 1.1.4 2.1 1.2 2.8 1.6 1.6 4.1 1.6 5.7 0l12.7-12.7c.8-.8.8-2 0-2.8-.8-.8-2-.8-2.8 0L18 29.3l-1.4-1.4 8.5-8.5c1.6-1.6 4.1-1.6 5.7 0 1.6 1.6 1.6 4.1 0 5.7L18 37.8c-1.1 1.2-2.7 1.8-4.2 1.8z"/></svg>',
+					'<label class="modtelegram-helper-chat-input-attach-label flaticon-clip">',
 					'<input type="file" name="file" style="display: none;">',
 					'</label>',
 					'<button type="submit" value="chat/attachfile" style="display:none;">send attach</button>',
@@ -221,8 +220,8 @@
 							case 'chat/sendmessage':
 								modTelegram.tools.clear(modTelegram.selector.helperChatMessage);
 								break;
-							case 'chat/sendfile':
-
+							case 'chat/attachfile':
+								$(form)[0].reset();
 								break;
 							default:
 								break;
@@ -249,6 +248,7 @@
 			source: null,
 
 			init: function () {
+
 				if (!window.EventSource) {
 					modTelegram.tools.error('Browser not EventSource');
 					return;
@@ -256,10 +256,10 @@
 
 				if (!this.source) {
 					this.source = new EventSource(modTelegramConfig.actionUrl +
-							'?action=chat/getmessage'+
-							'&propkey='+ modTelegramConfig.propkey +
-							'&ctx='+ modTelegramConfig.ctx +
-							''
+						'?action=chat/getmessage'+
+						'&propkey='+ modTelegramConfig.propkey +
+						'&ctx='+ modTelegramConfig.ctx +
+						''
 					);
 				}
 
@@ -283,6 +283,12 @@
 				};
 
 			},
+
+			close: function() {
+				if (this.source) {
+					this.source.close();
+				}
+			}
 		},
 
 

@@ -1127,7 +1127,10 @@ class modtelegram
      */
     protected function telegramEncodeFile($path = '')
     {
-        $file = "@{$path}";
+        $file = class_exists('CurlFile', false) ? new CURLFile(realpath($path)) : "@{$path}";
+
+
+        //$file = "@{$path}";
 
         return $file;
     }

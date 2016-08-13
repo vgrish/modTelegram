@@ -30,8 +30,12 @@ class modChatGetMessageProcessor extends modTelegramResponseProcessor
 
                 $limit = $this->getProperty('limit', 10);
                 $timestamp = (int)$this->getProperty('timestamp', $_SERVER["HTTP_LAST_EVENT_ID"]);
+
                 if (!$timestamp) {
                     $limit = 0;
+                }
+                elseif ($timestamp AND $timestamp < $_SESSION[$this->modtelegram->namespace]['timestamp']) {
+                    $timestamp = $_SESSION[$this->modtelegram->namespace]['timestamp'];
                 }
 
                 $q = $this->modx->newQuery($this->classMessage);
@@ -50,14 +54,17 @@ class modChatGetMessageProcessor extends modTelegramResponseProcessor
                         $data['messages'][] = $this->modtelegram->processChatMessage($row);
                         $data['timestamp'] = $row['timestamp'];
                     }
+                    $_SESSION[$this->modtelegram->namespace]['timestamp'] = $data['timestamp'];
                 }
 
                 if (!empty($data['messages'])) {
                     $data['user'] = $this->modtelegram->getUserData($chat->getUser());
                     $data['manager'] = $this->modtelegram->getManagerData($chat->getManager());
+                    $this->sendRequest($data);
                 }
-
-                $this->sendRequest($data);
+                else {
+                    $this->sendExit();
+                }
 
                 if (!$timestamp) {
                     $this->sendExit();

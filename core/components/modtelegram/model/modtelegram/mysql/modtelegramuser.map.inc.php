@@ -9,6 +9,7 @@ $xpdo_meta_map['modTelegramUser']= array (
     'id' => NULL,
     'user' => 0,
     'active' => 1,
+    'properties' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -39,6 +40,12 @@ $xpdo_meta_map['modTelegramUser']= array (
       'null' => false,
       'default' => 1,
       'index' => 'index',
+    ),
+    'properties' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'json',
+      'null' => true,
     ),
   ),
   'indexes' => 

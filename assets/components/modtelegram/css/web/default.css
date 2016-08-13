@@ -328,6 +328,7 @@
   display: table-cell;
   width: 100%;
   vertical-align: middle;
+  padding: 10px;
 }
 .modtelegram-helper-chat-input-text textarea {
   display: block;
@@ -345,6 +346,7 @@ label.modtelegram-helper-chat-input-attach-label {
   display: table-cell;
   vertical-align: middle;
   cursor: pointer;
+  font-size: 13pt;
 }
 .modtelegram-helper-chat-input-attach-label svg {
   width: 2em;
