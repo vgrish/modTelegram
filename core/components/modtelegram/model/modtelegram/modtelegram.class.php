@@ -1277,6 +1277,7 @@ class modtelegram
      */
     public function processChatMessage(array $row = array())
     {
+        $row['timestamp'] = preg_match('/^\d+$/', $row['timestamp']) ? $row['timestamp'] : strtotime($row['timestamp']);
         $row['data'] = date($this->getOption('data_format', null, 'd.m.Y H:i'), $row['timestamp']);
         $row['message'] = strip_tags(html_entity_decode($row['message'], ENT_QUOTES, 'UTF-8'));
         $row['sender'] = $this->lexicon('default_' . $row['from']);
@@ -1291,6 +1292,7 @@ class modtelegram
      */
     public function processTelegramMessage(array $row = array())
     {
+        $row['timestamp'] = preg_match('/^\d+$/', $row['timestamp']) ? $row['timestamp'] : strtotime($row['timestamp']);
         $row['data'] = date($this->getOption('data_format', null, 'd.m.Y H:i'), $row['timestamp']);
         $row['message'] = strip_tags(html_entity_decode($row['message'], ENT_QUOTES, 'UTF-8'));
         $row['sender'] = $this->lexicon('default_' . $row['from']);
