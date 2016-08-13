@@ -26,13 +26,15 @@ $_lang['modtelegram_description_action_chatout'] = '[[+action]] - отключи
 $_lang['modtelegram_description_action_history'] = '[[+action]] - получить историю чата';
 $_lang['modtelegram_description_action_reply'] = '[[+action]] - написать в чат';
 $_lang['modtelegram_description_action_status'] = '[[+action]] - статус';
+$_lang['modtelegram_description_action_location'] = '[[+action]] - получить локацию';
+
 
 // info
 
 $_lang['modtelegram_chatin'] = '/chatin_[[+uid]]';
 $_lang['modtelegram_history'] = '[[+sender]]: [[+data]] - [[+message]]';
 $_lang['modtelegram_status'] = '[[+id]]: [[+active]]';
-
+$_lang['modtelegram_location'] = '[[+region.name_ru]], [[+city.name_ru]] [ [[+ip]] ]';
 
 $_lang['modtelegram_default_user'] = 'Пользователь';
 $_lang['modtelegram_default_manager'] = 'Менеджер';
@@ -55,6 +57,9 @@ $_lang['modtelegram_hook_info_failure_history'] = 'Ошибка получени
 
 $_lang['modtelegram_hook_info_success_status'] = 'Статус';
 $_lang['modtelegram_hook_info_failure_status'] = 'Ошибка получения статуса';
+
+$_lang['modtelegram_hook_info_success_location'] = 'Локация пользователя';
+$_lang['modtelegram_hook_info_failure_location'] = 'Ошибка получения локации';
 
 
 

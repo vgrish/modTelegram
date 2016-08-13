@@ -6,6 +6,11 @@ class modTelegramManager extends xPDOObject
     /** @var modtelegram $modtelegram */
     public $modtelegram;
 
+    /**
+     * modTelegramManager constructor.
+     *
+     * @param xPDO $xpdo
+     */
     public function __construct(xPDO & $xpdo)
     {
         parent::__construct($xpdo);
@@ -13,6 +18,14 @@ class modTelegramManager extends xPDOObject
     }
 
 
+    /**
+     * @param xPDO   $xpdo
+     * @param string $className
+     * @param mixed  $criteria
+     * @param bool   $cacheFlag
+     *
+     * @return modTelegramManager
+     */
     public static function load(xPDO & $xpdo, $className, $criteria, $cacheFlag = true)
     {
         /** @var $instance modTelegramManager */
@@ -32,6 +45,11 @@ class modTelegramManager extends xPDOObject
         return $instance;
     }
 
+    /**
+     * @param int $active
+     *
+     * @return bool
+     */
     public function setActive($active = 1)
     {
         $this->setDirty();
@@ -41,6 +59,31 @@ class modTelegramManager extends xPDOObject
         return $set;
     }
 
+    /**
+     * @param string $ip
+     *
+     * @return bool
+     */
+    public function setIp($ip = '')
+    {
+        $this->setDirty();
+        if (empty($ip)) {
+            $ip = $this->modtelegram->getUserIp();
+        }
+        $properties = array_merge((array)$this->get('properties'), array(
+            'ip' => $ip
+        ));
+        $this->set('properties', $properties);
+        $set = $this->save();
+
+        return $set;
+    }
+
+    /**
+     * @param string $message
+     *
+     * @return array|bool
+     */
     public function sendMessage($message = '')
     {
         return $this->modtelegram->sendMessage($message, $this->get('id'));

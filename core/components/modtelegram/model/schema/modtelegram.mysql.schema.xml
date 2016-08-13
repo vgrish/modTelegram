@@ -9,6 +9,7 @@
 			   index="index"/>
 		<field key="active" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" null="false"
 			   default="1" index="index"/>
+		<field key="properties" dbtype="text" phptype="json" null="true"/>
 
 		<index alias="id" name="id" primary="true" unique="true" type="BTREE">
 			<column key="id" length="" collation="A" null="false"/>
@@ -33,6 +34,7 @@
 			   index="index"/>
 		<field key="active" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" null="false"
 			   default="1" index="index"/>
+		<field key="properties" dbtype="text" phptype="json" null="true"/>
 
 		<index alias="id" name="id" primary="true" unique="true" type="BTREE">
 			<column key="id" length="" collation="A" null="false"/>

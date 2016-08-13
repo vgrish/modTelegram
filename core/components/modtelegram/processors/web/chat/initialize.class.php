@@ -16,7 +16,7 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
             AND
             $user = $this->modx->getObject($this->classUser, array(
                 'id'   => session_id(),
-                'user' => $this->modx->user->isAuthenticated($this->modx->context->key) ? $this->modx->user->id : 0
+                'user' => $this->modx->user->isAuthenticated($this->modx->context->key) ? $this->modx->user->id : 0,
             ))
             AND
             $chat = $this->modx->getObject($this->classChat, array(
@@ -24,6 +24,9 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
                 'mid' => $manager
             ))
         ) {
+
+            $user->setIp();
+
             if (!$chat->isActive()) {
                 $message = $this->modtelegram->lexicon('chatin_manager_info_success_' . $this->action,
                     array('uid' => session_id()));

@@ -289,6 +289,26 @@ class modtelegram
     }
 
     /**
+     * @param array  $array
+     * @param string $prefix
+     *
+     * @return array
+     */
+    public function flattenArray(array $array = array(), $prefix = '')
+    {
+        $outArray = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $outArray = $outArray + $this->flattenArray($value, $prefix . $key . '.');
+            } else {
+                $outArray[$prefix . $key] = $value;
+            }
+        }
+
+        return $outArray;
+    }
+
+    /**
      * from
      * https://github.com/bezumkin/pdoTools/blob/19195925226e3f8cb0ba3c8d727567e9f3335673/core/components/pdotools/model/pdotools/pdotools.class.php#L320
      *
@@ -1451,4 +1471,27 @@ class modtelegram
 
         return $time * $mpx;
     }
+
+    /**
+     * @return string
+     */
+    public static function getUserIp()
+    {
+        $ip = '127.0.0.1';
+        switch (true) {
+            case (isset($_SERVER['HTTP_CLIENT_IP']) AND $_SERVER['HTTP_CLIENT_IP'] != ''):
+                $ip = $_SERVER['HTTP_CLIENT_IP'];
+                break;
+            case (isset($_SERVER['HTTP_X_FORWARDED_FOR']) AND $_SERVER['HTTP_X_FORWARDED_FOR'] != ''):
+                $ip = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+                $ip = $ip[0];
+                break;
+            case (isset($_SERVER['REMOTE_ADDR']) AND $_SERVER['REMOTE_ADDR'] != ''):
+                $ip = $_SERVER['REMOTE_ADDR'];
+                break;
+        }
+
+        return $ip;
+    }
+
 }
