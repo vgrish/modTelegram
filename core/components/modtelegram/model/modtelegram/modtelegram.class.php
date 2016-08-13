@@ -3,6 +3,10 @@
 ini_set('display_errors', 1);
 ini_set('error_reporting', -1);
 
+if (!class_exists('Pusher')) {
+    require_once MODX_CORE_PATH . 'components/modtelegram/vendor/pusher/lib/Pusher.php';
+}
+
 /**
  * The base class for modtelegram.
  */
@@ -28,6 +32,8 @@ class modtelegram
 
     public $classModUser = 'modUser';
     public $classModUserProfile = 'modUserProfile';
+
+    public $pusher;
 
     /**
      * @param modX  $modx
@@ -407,9 +413,14 @@ class modtelegram
         $config['assetsUrl'] = str_replace($pls['pl'], $pls['vl'], $properties['assetsUrl']);
         $config['actionUrl'] = str_replace($pls['pl'], $pls['vl'], $properties['actionUrl']);
         $config['helper'] = (array)$properties['helper'];
-        $config['propkey'] = "{$properties['propkey']}";
-        $config['action'] = "{$properties['action']}";
-        $config['ctx'] = "{$this->modx->context->get('key')}";
+        $config['propkey'] = $properties['propkey'];
+        $config['action'] = $properties['action'];
+        $config['ctx'] = $this->modx->context->get('key');
+
+        $config['pusher']['active'] = (bool)$this->getOption('pusher_active');
+        $config['pusher']['key'] = $this->getOption('pusher_key');
+        $config['pusher']['cluster'] = $this->getOption('pusher_cluster');
+        $config['pusher']['channel'] = session_id();
 
         $this->modx->regClientStartupScript("<script type=\"text/javascript\">modTelegramConfig={$this->modx->toJSON($config)};</script>",
             true);
@@ -1310,6 +1321,23 @@ class modtelegram
     }
 
 
+    public function loadPusher()
+    {
+        if (!$this->pusher) {
+            $this->pusher = new Pusher(
+                $this->getOption('pusher_key', null),
+                $this->getOption('pusher_secret', null),
+                $this->getOption('pusher_id', null),
+                array(
+                    'cluster'   => $this->getOption('pusher_cluster', null),
+                    'encrypted' => (bool)$this->getOption('pusher_encrypted', null),
+                )
+            );
+        }
+
+        return $this->pusher;
+    }
+
     /**
      * @param array $data
      *
@@ -1340,7 +1368,21 @@ class modtelegram
             'message' => $message
         ), '', true, true);
 
-        return $msg->save();
+        $save = $msg->save();
+
+        if ($save AND $this->getOption('pusher_active', null)) {
+
+            $data = array();
+            $data['messages'][] = $this->processChatMessage($msg->toArray());
+            $data['user'] = $this->getUserData($uid);
+            $data['manager'] = $this->getManagerData($mid);
+
+            $pusher = $this->loadPusher();
+            $pusher->trigger($uid, 'getmessage', $data);
+
+        }
+
+        return $save;
     }
 
     /**

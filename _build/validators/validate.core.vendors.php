@@ -19,12 +19,12 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
             array_merge(array('deleteTop' => true, 'skipDirs' => false, 'extensions' => array())));
 
         $vendors = array(
-           /* array(
-                'ratchet',
-                'ratchet',
-                'https://github.com/ratchetphp/Ratchet/archive/master.zip',
+            array(
+                'pusher',
+                'pusher',
+                'https://github.com/pusher/pusher-http-php/archive/master.zip',
                 MODX_CORE_PATH . 'components/modtelegram/vendor/'
-            ),*/
+            ),
         );
 
         foreach ($vendors as $vendor) {

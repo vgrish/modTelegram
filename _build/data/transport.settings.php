@@ -25,22 +25,55 @@ $tmp = array(
         'area'  => 'modtelegram_main',
     ),
 
+    'pusher_active'  => array(
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area'  => 'modtelegram_pusher',
+    ),
+    'pusher_id'     => array(
+        'value' => '236793',
+        'xtype' => 'textfield',
+        'area'  => 'modtelegram_pusher',
+    ),
+    'pusher_key'     => array(
+        'value' => '847894834d2742855180',
+        'xtype' => 'textfield',
+        'area'  => 'modtelegram_pusher',
+    ),
+    'pusher_secret'     => array(
+        'value' => 'f14dd376a3558f19c6b5',
+        'xtype' => 'textfield',
+        'area'  => 'modtelegram_pusher',
+    ),
+    'pusher_cluster' => array(
+        'value' => 'eu',
+        'xtype' => 'textfield',
+        'area'  => 'modtelegram_pusher',
+    ),
+    'pusher_encrypted'  => array(
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area'  => 'modtelegram_pusher',
+    ),
+
+    //encrypted
+
     //временные
-   /* 'assets_path'      => array(
-        'value' => '{base_path}modtelegram/assets/components/modtelegram/',
-        'xtype' => 'textfield',
-        'area'  => 'modtelegram_temp',
-    ),
-    'assets_url'       => array(
-        'value' => '/modtelegram/assets/components/modtelegram/',
-        'xtype' => 'textfield',
-        'area'  => 'modtelegram_temp',
-    ),
-    'core_path'        => array(
-        'value' => '{base_path}modtelegram/core/components/modtelegram/',
-        'xtype' => 'textfield',
-        'area'  => 'modtelegram_temp',
-    ),*/
+    /* 'assets_path'      => array(
+         'value' => '{base_path}modtelegram/assets/components/modtelegram/',
+         'xtype' => 'textfield',
+         'area'  => 'modtelegram_temp',
+     ),
+     'assets_url'       => array(
+         'value' => '/modtelegram/assets/components/modtelegram/',
+         'xtype' => 'textfield',
+         'area'  => 'modtelegram_temp',
+     ),
+     'core_path'        => array(
+         'value' => '{base_path}modtelegram/core/components/modtelegram/',
+         'xtype' => 'textfield',
+         'area'  => 'modtelegram_temp',
+     ),*/
 
 
     /*
