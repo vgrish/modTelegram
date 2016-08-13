@@ -34,7 +34,7 @@
 			type: 'popup',
 			template: 'base',
 			position: 'rb',
-			attach: true,
+			attach: false,
 		};
 
 		modTelegram.$doc = $(document);
@@ -117,6 +117,23 @@
 
 					'<div class="modtelegram-helper-message-body">',
 					'<span class="modtelegram-helper-message-text">{message}</span>',
+					'</div>',
+
+					'<div class="modtelegram-helper-message-footer">',
+					'</div>',
+
+					'</div>'
+				],
+				document: [
+					'<div class="modtelegram-helper-message modtelegram-from-{from}" id="modtelegram-message-{id}">',
+
+					'<div class="modtelegram-helper-message-header">',
+					'<span class="modtelegram-helper-message-user">{user_username}</span>',
+					'<span class="modtelegram-helper-message-data">{data}</span>',
+					'</div>',
+
+					'<div class="modtelegram-helper-message-body">',
+					'<span class="modtelegram-helper-message-text">document</span>',
 					'</div>',
 
 					'<div class="modtelegram-helper-message-footer">',

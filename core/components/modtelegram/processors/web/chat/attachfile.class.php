@@ -36,10 +36,26 @@ class modChatAttachFileProcessor extends modTelegramResponseProcessor
 
             file_put_contents(MODX_BASE_PATH . 'tmp/' . $name . '.' . $type, file_get_contents($tmp));
 
-            $this->modtelegram->telegramSendDocument(array(
+            $response = $this->modtelegram->telegramSendDocument(array(
                 'chat_id'   => $chat->getManager(),
                 'from_path' => 'tmp/' . $name . '.' . $type,
             ));
+
+            if (
+                $response
+                AND
+                $document = $this->modx->getOption('document', $response)
+                AND
+                $fileId = $this->modx->getOption('file_id', $document)
+            ) {
+
+                $this->modtelegram->writeUserMessage(array(
+                    'uid'     => $chat->getUser(),
+                    'mid'     => $chat->getManager(),
+                    'message' => $fileId,
+                    'type'    => 'document'
+                ));
+            }
 
             return $this->success('', $data);
         }
