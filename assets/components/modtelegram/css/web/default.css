@@ -1,185 +1,360 @@
+@font-face {
+  font-family: "Flaticon";
+  src: url("font/Flaticon.eot");
+  src: url("font/Flaticon.eot?#iefix") format("embedded-opentype"), url("font/Flaticon.woff") format("woff"), url("font/Flaticon.ttf") format("truetype"), url("font/Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("font/Flaticon.svg#Flaticon") format("svg");
+  }
+}
+[class^="flaticon-"]:before,
+[class*=" flaticon-"]:before,
+[class^="flaticon-"]:after,
+[class*=" flaticon-"]:after {
+  display: inline-block;
+  font: normal normal normal 14px/1 'Flaticon';
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.flaticon-check:before {
+  content: "\f100";
+}
+.flaticon-check-1:before {
+  content: "\f101";
+}
+.flaticon-clip:before {
+  content: "\f102";
+}
+.flaticon-error:before {
+  content: "\f103";
+}
+.flaticon-telegram:before {
+  content: "\f104";
+}
+.modtelegram-helper-button,
+.modtelegram-helper-chat,
+.modtelegram-helper-chat * {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font: normal 400 14px / 1.25 'Helvetica Neue', arial, sans-sefif;
+  -webkit-font-smoothing: antialiased;
+}
 .modtelegram-hidden {
-	display: none!important;
+  display: none !important;
 }
 .modtelegram-active {
-	display: block;
+  display: block;
 }
-
-
 .modtelegram-helper-button {
-	width: auto;
-	display: block;
-	position: fixed;
-	padding: 10px;
-	cursor: pointer;
-	color: #fff;
-	background-color: #0088cc;
-	z-index: 9999;
+  width: auto;
+  display: inline-block;
+  position: fixed;
+  padding: 10px 20px 10px 50px;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #4399d7;
+  -webkit-box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  -webkit-transition: background-color 0.4s ease;
+  -moz-transition: background-color 0.4s ease;
+  -ms-transition: background-color 0.4s ease;
+  -o-transition: background-color 0.4s ease;
+  transition: background-color 0.4s ease;
 }
-
-
+.modtelegram-helper-button:hover {
+  background: #2980be;
+}
+.modtelegram-helper-button:before {
+  content: '\f104';
+  display: block;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 5px;
+  top: 0;
+  text-align: center;
+  font-family: 'Flaticon';
+  font-size: 18px;
+  line-height: 40px;
+}
 .modtelegram-helper-button.modtelegram-lt {
-	top: 0;
-	left: 0;
+  top: 0;
+  left: 0;
 }
 .modtelegram-helper-button.modtelegram-lb {
-	bottom: 0;
-	left: 0;
+  bottom: 0;
+  left: 0;
 }
 .modtelegram-helper-button.modtelegram-rt {
-	top: 0;
-	right: 0;
+  top: 0;
+  right: 0;
 }
 .modtelegram-helper-button.modtelegram-rb {
-	bottom: 0;
-	right: 0;
+  bottom: 0;
+  right: 0;
 }
-
-
-
 .modtelegram-helper-chat {
-	width: 350px;
-	height: 350px;
-	display: block;
-	position: fixed;
-	background-color: #0088cc;
-	border: 1px solid #E4E4E4;
-	z-index: 9999;
+  width: 320px;
+  height: 380px;
+  border: 1px solid #b0b0b0;
+  display: block;
+  position: fixed;
+  background-color: #577695;
+  -webkit-box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.4);
+  z-index: 9999;
 }
-
 .modtelegram-helper-chat.modtelegram-lt {
-	top: 0;
-	left: 0;
+  top: 0;
+  left: 0;
 }
 .modtelegram-helper-chat.modtelegram-lb {
-	bottom: 0;
-	left: 0;
+  bottom: 0;
+  left: 0;
 }
 .modtelegram-helper-chat.modtelegram-rt {
-	top: 0;
-	right: 0;
+  top: 0;
+  right: 0;
 }
 .modtelegram-helper-chat.modtelegram-rb {
-	bottom: 0;
-	right: 0;
+  bottom: 0;
+  right: 0;
 }
-
 .modtelegram-helper-chat-header {
-	text-align: center;
-	color: #fff;
-	padding: 10px;
+  text-align: center;
+  color: #fff;
+  padding: 10px 0;
+  height: 40px;
+  margin: 0 40px;
+  font-size: 16px;
+  line-height: 20px;
+  white-space: nowrap;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-
+.modtelegram-helper-chat-header:before {
+  content: '\f104';
+  display: block;
+  width: 24px;
+  height: 24px;
+  padding-right: 1px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  text-align: center;
+  font-family: 'Flaticon';
+  font-size: 12px;
+  line-height: 24px;
+  -webkit-border-radius: 100%;
+  -khtml-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  background: #405d7b;
+  color: #fff;
+}
 .modtelegram-helper-chat .modtelegram-helper-close {
-	display: block;
-	position: absolute;
-	right: 5px;
-	top: 5px;
-	color: #000;
-	cursor: pointer;
-	padding: 5px;
+  display: block;
+  position: absolute;
+  right: 5px;
+  top: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  color: #bccfe2;
+  -webkit-transition: color 0.4s ease;
+  -moz-transition: color 0.4s ease;
+  -ms-transition: color 0.4s ease;
+  -o-transition: color 0.4s ease;
+  transition: color 0.4s ease;
 }
-
+.modtelegram-helper-chat .modtelegram-helper-close:hover {
+  color: white;
+}
+.modtelegram-helper-chat .modtelegram-helper-close:before {
+  content: '\f103';
+  font-family: 'Flaticon';
+  display: block;
+}
 .modtelegram-helper-chat-welcome {
-	height: 100%;
-	padding: 10px;
-	text-align: center;
-	color: #0088cc;
-	background-color: #fff;
+  position: relative;
+  display: table-cell;
+  padding: 10px 10px 30px;
+  height: 338px;
+  width: 318px;
+  vertical-align: middle;
+  text-align: center;
+  color: #000;
+  background-color: #fff;
 }
-
+.modtelegram-helper-chat-welcome p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.modtelegram-helper-chat-welcome button {
+  border: 0;
+  -webkit-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 10px 30px;
+  height: 40px;
+  font-size: 16px;
+  line-height: 20px;
+  color: #fff;
+  background: #4399d7;
+  cursor: pointer;
+  -webkit-transition: background-color 0.4s ease;
+  -moz-transition: background-color 0.4s ease;
+  -ms-transition: background-color 0.4s ease;
+  -o-transition: background-color 0.4s ease;
+  transition: background-color 0.4s ease;
+}
+.modtelegram-helper-chat-welcome button:hover {
+  background: #2980be;
+}
 .modtelegram-helper-chat-body {
-	height: 75%;
-	background-color: #fff;
-	overflow-y: scroll;
+  height: 260px;
+  background: #bfa3a4;
+  background: -moz-linear-gradient(-45deg, #bfa3a4 0%, #596e8c 100%);
+  background: -webkit-linear-gradient(-45deg, #bfa3a4 0%, #596e8c 100%);
+  background: linear-gradient(135deg, #bfa3a4 0%, #596e8c 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bfa3a4', endColorstr='#596e8c', GradientType=1);
+  overflow-y: scroll;
+  border-top: 1px solid rgba(0,0,0,.15);
+  border-bottom: 1px solid rgba(0,0,0,.15);
 }
-
 .modtelegram-helper-chat-footer {
-	text-align: center;
-	color: #fff;
-	padding: 10px;
-	font-size: 8pt;
+  height: 18px;
+  text-align: center;
+  color: #fff;
+  font-size: 10px;
+  line-height: 18px;
 }
-
-
 .modtelegram-helper-message {
-	display: inline-block;
-	padding: 5px;
-	margin: 5px;
-	width: 80%;
-	font-size: 10pt;
-	box-shadow: 1px 1px 1px 1px #ccc;
+  display: inline-block;
+  padding: 7px 10px;
+  margin: 5px;
+  max-width: 80%;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
-.modtelegram-helper-message-header {
-	font-size: 8pt;
-}
-.modtelegram-helper-message-footer {
-	font-size: 8pt;
-}
-.modtelegram-helper-message-data {
-	float: right;
-	color: #ccc;
-}
-.modtelegram-helper-message-text {
-	word-wrap: break-word;
-	margin: 0;
-}
-
-
 .modtelegram-helper-message.modtelegram-from-user {
-	float: left;
+  float: right;
+  background: #f0fbd7;
+  -webkit-box-shadow: 0 2px 0 rgba(108,177,65,.5);
+  -moz-box-shadow: 0 2px 0 rgba(108,177,65,.5);
+  box-shadow: 0 2px 0 rgba(108,177,65,.5);
 }
 .modtelegram-helper-message.modtelegram-from-manager {
-	float: right;
+  float: left;
+  background: white;
+  -webkit-box-shadow: 0 2px 0 rgba(0,0,0,.1);
+  -moz-box-shadow: 0 2px 0 rgba(0,0,0,.1);
+  box-shadow: 0 2px 0 rgba(0,0,0,.1);
 }
-
-
+.modtelegram-helper-message-header {
+  margin-bottom: 4px;
+}
+.modtelegram-helper-message-header:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.modtelegram-helper-message-user {
+  font-size: 12px;
+  float: left;
+}
+.modtelegram-helper-message.modtelegram-from-user .modtelegram-helper-message-user {
+  color: #6cb141;
+}
+.modtelegram-helper-message.modtelegram-from-manager .modtelegram-helper-message-user {
+  color: #999;
+}
+.modtelegram-helper-message-data {
+  float: right;
+  font-size: 12px;
+  font-style: italic;
+  padding-left: 10px;
+}
+.modtelegram-helper-message.modtelegram-from-user .modtelegram-helper-message-data {
+  color: #999;
+}
+.modtelegram-helper-message.modtelegram-from-manager .modtelegram-helper-message-data {
+  color: #ccc;
+}
+.modtelegram-helper-message-footer {
+  font-size: 8pt;
+}
+.modtelegram-helper-message-text {
+  word-wrap: break-word;
+  margin: 0;
+  font-size: 13px;
+}
 .modtelegram-helper-chat-inputs {
-	display: table;
-	width: 100%;
-	border: 1px solid #ddd;
-	background: #fff;
+  display: table;
+  position: relative;
+  width: 100%;
+  height: 60px;
+  background: #fff;
 }
-
 .modtelegram-helper-chat-input-text.modtelegram-active {
-	display: table-cell;
-	width: 100%;
-	vertical-align: middle;
+  display: table-cell;
+  width: 100%;
+  height: 60px;
+  vertical-align: middle;
 }
 .modtelegram-helper-chat-input-attach.modtelegram-active {
-	display: table-cell;
-	width: 100%;
-	vertical-align: middle;
+  display: table-cell;
+  width: 100%;
+  vertical-align: middle;
 }
-
 .modtelegram-helper-chat-input-text textarea {
-	resize: none;
-	border: 0;
-	padding: 0.3em 0.5em;
-	width: 100%;
+  display: block;
+  resize: none;
+  border: 0;
+  padding: 6px 10px;
+  width: 100%;
+  height: 60px;
+  font: 13px / 16px 'Helvetica Neue', arial, sans-serif;
 }
 .modtelegram-helper-chat-input-text textarea:focus {
-	outline: none;
+  outline: none;
 }
-
 label.modtelegram-helper-chat-input-attach-label {
-	display: table-cell;
-	vertical-align: middle;
-	cursor: pointer;
+  display: table-cell;
+  vertical-align: middle;
+  cursor: pointer;
 }
-
 .modtelegram-helper-chat-input-attach-label svg {
-	width: 2em;
-	height: 2em;
-	fill: currentColor;
-	vertical-align: middle;
-	pointer-events: none;
-	-webkit-transition: fill 0.2s linear;
-	transition: fill 0.2s linear;
+  width: 2em;
+  height: 2em;
+  fill: currentColor;
+  vertical-align: middle;
+  pointer-events: none;
+  -webkit-transition: fill 0.2s linear;
+  -moz-transition: fill 0.2s linear;
+  -ms-transition: fill 0.2s linear;
+  -o-transition: fill 0.2s linear;
+  transition: fill 0.2s linear;
 }
-
-
-
-
-
-
