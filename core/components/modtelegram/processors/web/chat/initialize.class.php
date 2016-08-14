@@ -34,8 +34,7 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
             }
 
             if ($chat->isNew()) {
-                $message = 'hello!';
-
+                $message = $this->modtelegram->lexicon('chatin_user_info_success_' . $this->action);
                 $this->modtelegram->writeManagerMessage(array(
                     'uid'     => session_id(),
                     'mid'     => $manager,

@@ -68,7 +68,7 @@ $_lang['modtelegram_chatin_manager_info_failure_initialize'] = '';
 $_lang['modtelegram_chatin_manager_info_success_initialize'] = 'У вас новый чат /chatin_[[+uid]]';
 
 $_lang['modtelegram_chatin_user_info_failure_initialize'] = 'Нет доступных менеджеров';
-$_lang['modtelegram_chatin_user_info_success_initialize'] = '';
+$_lang['modtelegram_chatin_user_info_success_initialize'] = 'Приветствую, чем могу помочь?';
 
 $_lang['modtelegram_chatin_user_info_failure_sendmessage'] = 'Ошибка отправки сообщения';
 $_lang['modtelegram_chatin_user_info_success_sendmessage'] = '';
