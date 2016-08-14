@@ -27,7 +27,7 @@ $tmp = array(
 
     'pusher_active'  => array(
         'xtype' => 'combo-boolean',
-        'value' => true,
+        'value' => false,
         'area'  => 'modtelegram_pusher',
     ),
     'pusher_id'     => array(
@@ -56,8 +56,6 @@ $tmp = array(
         'area'  => 'modtelegram_pusher',
     ),
 
-    //encrypted
-
     //временные
     /* 'assets_path'      => array(
          'value' => '{base_path}modtelegram/assets/components/modtelegram/',
@@ -75,14 +73,6 @@ $tmp = array(
          'area'  => 'modtelegram_temp',
      ),*/
 
-
-    /*
-	'some_setting' => array(
-		'xtype' => 'combo-boolean',
-		'value' => true,
-		'area' => 'modtelegram_main',
-	),
-	*/
 );
 
 foreach ($tmp as $k => $v) {

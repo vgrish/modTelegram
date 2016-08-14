@@ -34,7 +34,10 @@ class modHookHistoryProcessor extends modTelegramActionsProcessor
                 }
             }
 
-            $this->sendMessage($message);
+            for ($i = 0; $i <= 1000; $i = $i + 10) {
+                $this->sendMessage(array_slice($message, $i, $i));
+                usleep(250000);
+            }
 
             return $this->success('', $message);
         }
