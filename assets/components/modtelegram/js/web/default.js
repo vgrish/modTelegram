@@ -23,6 +23,7 @@
 		modTelegram.selector.helperChatWelcome = '.modtelegram-helper-chat-welcome';
 		modTelegram.selector.helperChatInitialize = '.modtelegram-helper-chat-initialize';
 		modTelegram.selector.helperChatBody = '.modtelegram-helper-chat-body';
+		modTelegram.selector.helperChatFooter = '.modtelegram-helper-chat-footer';
 		modTelegram.selector.helperChatInputText = '.modtelegram-helper-chat-input-text';
 		modTelegram.selector.helperChatInputAttach = '.modtelegram-helper-chat-input-attach';
 		modTelegram.selector.helperChatMessage = '.modtelegram-helper-chat-input-text [name="message"]';
@@ -83,7 +84,7 @@
 					'</form>',
 					'</div>',
 
-					'<div class="modtelegram-helper-chat-body {type} {template} {position}">',
+					'<div class="modtelegram-helper-chat-body modtelegram-hidden">',
 					'</div>',
 
 					'<div class="modtelegram-helper-chat-inputs">',
@@ -111,7 +112,7 @@
 
 					'</div>',
 
-					'<div class="modtelegram-helper-chat-footer {type} {template} {position}">',
+					'<div class="modtelegram-helper-chat-footer modtelegram-hidden">',
 					'modtelegram',
 					'</div>',
 					'</div>'
@@ -236,6 +237,7 @@
 								modTelegram.tools.hide(modTelegram.selector.helperChatWelcome);
 								modTelegram.tools.show(modTelegram.selector.helperChatBody);
 								modTelegram.tools.show(modTelegram.selector.helperChatInputText);
+								modTelegram.tools.show(modTelegram.selector.helperChatFooter);
 
 								if (modTelegram.helper.config.attach) {
 									modTelegram.tools.show(modTelegram.selector.helperChatInputAttach);
@@ -349,9 +351,10 @@
 			var wrapper = $(modTelegram.selector.helperChatBody);
 			var h = wrapper[0].scrollHeight;
 			wrapper.scrollTop(h);
+		},
 
-			var text = $(modTelegram.selector.helperChatMessage).val();
-			$(modTelegram.selector.helperChatMessage).val(text).focus();
+		focusMessage: function() {
+			$(modTelegram.selector.helperChatMessage).focus();
 		},
 
 		handleMessage: function (data) {
@@ -384,6 +387,7 @@
 					modTelegram.tools.bleep();
 				}
 			});
+
 		},
 
 	};
@@ -397,7 +401,7 @@
 			modTelegram.tools.hide(modTelegram.selector.helperButton);
 			modTelegram.tools.show(modTelegram.selector.helperChat);
 			modTelegram.helper.scrollMessage();
-
+			modTelegram.helper.focusMessage();
 			e.preventDefault();
 			return false;
 		});

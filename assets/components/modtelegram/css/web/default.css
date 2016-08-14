@@ -128,18 +128,22 @@
 .modtelegram-helper-chat.modtelegram-lt {
   top: 0;
   left: 0;
+  overflow: hidden;
 }
 .modtelegram-helper-chat.modtelegram-lb {
   bottom: 0;
   left: 0;
+  overflow: hidden;
 }
 .modtelegram-helper-chat.modtelegram-rt {
   top: 0;
   right: 0;
+  overflow: hidden;
 }
 .modtelegram-helper-chat.modtelegram-rb {
   bottom: 0;
   right: 0;
+  overflow: hidden;
 }
 .modtelegram-helper-chat-header {
   text-align: center;
