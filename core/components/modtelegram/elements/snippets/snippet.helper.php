@@ -23,16 +23,3 @@ $modtelegram->saveProperties($scriptProperties);
 $modtelegram->loadResourceJsCss($scriptProperties);
 
 return '';
-
-
-/*$row = array(
-    'propkey' => $propkey,
-);
-
-$output = $modtelegram->getChunk($wrapper, $row);
-
-if (!empty($toPlaceholder)) {
-    $modx->setPlaceholder($toPlaceholder, $output);
-} else {
-    return $output;
-}*/

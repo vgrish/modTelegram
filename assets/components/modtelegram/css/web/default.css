@@ -11,10 +11,10 @@
     src: url("font/Flaticon.svg#Flaticon") format("svg");
   }
 }
-[class^="flaticon-"]:before,
-[class*=" flaticon-"]:before,
-[class^="flaticon-"]:after,
-[class*=" flaticon-"]:after {
+[class^="modtelegram-icon-"]:before,
+[class*=" modtelegram-icon-"]:before,
+[class^="modtelegram-icon-"]:after,
+[class*=" modtelegram-icon-"]:after {
   display: inline-block;
   font: normal normal normal 14px/1 'Flaticon';
   font-size: inherit;
@@ -22,25 +22,27 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.flaticon-check:before {
+.modtelegram-icon-check:before {
   content: "\f100";
 }
-.flaticon-check-1:before {
+.modtelegram-icon-check-1:before {
   content: "\f101";
 }
-.flaticon-clip:before {
+.modtelegram-icon-clip:before {
   content: "\f102";
 }
-
-.flaticon-send:before {
-  content: "\f102";
+.modtelegram-icon-send:before {
+  content: "\f104";
 }
-
-.flaticon-error:before {
+.modtelegram-icon-error:before {
   content: "\f103";
 }
-.flaticon-telegram:before {
+.modtelegram-icon-telegram:before {
   content: "\f104";
+}
+
+.modtelegram-color-grey {
+  color: #999;
 }
 .modtelegram-helper-button,
 .modtelegram-helper-chat,
@@ -331,16 +333,15 @@
 }
 .modtelegram-helper-chat-input-attach.modtelegram-active {
   display: table-cell;
-  width: 100%;
   vertical-align: middle;
-  padding: 10px;
-  float: left;
+  padding: 6px 0px 0px 6px;
+  height: 100%;
 }
 .modtelegram-helper-chat-input-text textarea {
   display: block;
   resize: none;
   border: 0;
-  padding: 6px 0px 6px 0px;
+  padding: 6px;
   width: 100%;
   height: 60px;
   font: 13px / 16px 'Helvetica Neue', arial, sans-serif;
@@ -360,4 +361,9 @@ label.modtelegram-helper-chat-input-text-label {
   vertical-align: middle;
   cursor: pointer;
   font-size: 13pt;
+  padding: 6px 6px 0px 0px;
+}
+.modtelegram-helper-chat-input-text-wrapper {
+  display: table-cell;
+  width: 100%;
 }

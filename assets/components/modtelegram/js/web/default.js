@@ -34,7 +34,7 @@
 			type: 'popup',
 			template: 'base',
 			position: 'rb',
-			attach: true,//false,
+			attach: false,
 		};
 
 		modTelegram.$doc = $(document);
@@ -90,7 +90,7 @@
 
 					'<div class="modtelegram-helper-chat-input-attach modtelegram-hidden">',
 					'<form class="modtelegram-helper-form" enctype="multipart/form-data">',
-					'<label class="modtelegram-helper-chat-input-attach-label flaticon-clip">',
+					'<label class="modtelegram-helper-chat-input-attach-label modtelegram-color-grey modtelegram-icon-clip">',
 					'<input type="file" name="file" style="display: none;">',
 					'</label>',
 					'<button type="submit" value="chat/attachfile" style="display:none;">send attach</button>',
@@ -99,8 +99,10 @@
 
 					'<div class="modtelegram-helper-chat-input-text modtelegram-hidden">',
 					'<form class="modtelegram-helper-form">',
+					'<div class="modtelegram-helper-chat-input-text-wrapper">',
 					'<textarea name="message" placeholder="enter message..."></textarea>',
-					'<label class="modtelegram-helper-chat-input-text-label flaticon-send">',
+					'</div>',
+					'<label class="modtelegram-helper-chat-input-text-label modtelegram-color-grey modtelegram-icon-send">',
 					'<input type="submit" value="chat/sendmessage" style="display: none;">',
 					'</label>',
 					'<button type="submit" value="chat/sendmessage" style="display:none;">send</button>',
@@ -201,9 +203,6 @@
 			wrapper
 				.append(modTelegram.helper.template.get('button'))
 				.append(modTelegram.helper.template.get('chat'));
-
-			console.log('-----');
-			console.log(this.config);
 
 		},
 
@@ -316,7 +315,7 @@
 
 
 				if (modTelegramConfig.pusher.active) {
-					//Pusher.logToConsole = true;
+					/*Pusher.logToConsole = true;*/
 
 					var pusher = new Pusher(modTelegramConfig.pusher.key, {
 						cluster: modTelegramConfig.pusher.cluster,
