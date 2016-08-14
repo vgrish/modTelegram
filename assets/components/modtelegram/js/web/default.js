@@ -34,7 +34,7 @@
 			type: 'popup',
 			template: 'base',
 			position: 'rb',
-			attach: false,
+			attach: true,//false,
 		};
 
 		modTelegram.$doc = $(document);
@@ -88,19 +88,22 @@
 
 					'<div class="modtelegram-helper-chat-inputs">',
 
-					'<div class="modtelegram-helper-chat-input-text modtelegram-hidden">',
-					'<form class="modtelegram-helper-form">',
-					'<textarea name="message" placeholder="enter message..."></textarea>',
-					'<button type="submit" value="chat/sendmessage" style="display:none;">send</button>',
-					'</form>',
-					'</div>',
-
 					'<div class="modtelegram-helper-chat-input-attach modtelegram-hidden">',
 					'<form class="modtelegram-helper-form" enctype="multipart/form-data">',
 					'<label class="modtelegram-helper-chat-input-attach-label flaticon-clip">',
 					'<input type="file" name="file" style="display: none;">',
 					'</label>',
 					'<button type="submit" value="chat/attachfile" style="display:none;">send attach</button>',
+					'</form>',
+					'</div>',
+
+					'<div class="modtelegram-helper-chat-input-text modtelegram-hidden">',
+					'<form class="modtelegram-helper-form">',
+					'<textarea name="message" placeholder="enter message..."></textarea>',
+					'<label class="modtelegram-helper-chat-input-text-label flaticon-send">',
+					'<input type="submit" value="chat/sendmessage" style="display: none;">',
+					'</label>',
+					'<button type="submit" value="chat/sendmessage" style="display:none;">send</button>',
 					'</form>',
 					'</div>',
 
@@ -347,6 +350,9 @@
 			var wrapper = $(modTelegram.selector.helperChatBody);
 			var h = wrapper[0].scrollHeight;
 			wrapper.scrollTop(h);
+
+			var text = $(modTelegram.selector.helperChatMessage).val();
+			$(modTelegram.selector.helperChatMessage).val(text).focus();
 		},
 
 		handleMessage: function (data) {
@@ -392,6 +398,7 @@
 			modTelegram.tools.hide(modTelegram.selector.helperButton);
 			modTelegram.tools.show(modTelegram.selector.helperChat);
 			modTelegram.helper.scrollMessage();
+
 			e.preventDefault();
 			return false;
 		});
