@@ -2,7 +2,7 @@
 
 ### Требования
 
-**HTTPS** для webhook.php
+**https** для webhook.php
 
 ### Установка
 
