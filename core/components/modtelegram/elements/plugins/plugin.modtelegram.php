@@ -2,7 +2,7 @@
 
 switch ($modx->event->name) {
 
-    /*case 'OnMODXInit':
+    case 'OnMODXInit':
         $modx->loadClass('modUser');
 
         $modx->map['modUser']['composites']['TelegramManager'] = array(
@@ -12,5 +12,13 @@ switch ($modx->event->name) {
             'cardinality' => 'one',
             'owner'       => 'local',
         );
-        break;*/
+
+        $modx->map['modUser']['composites']['TelegramUser'] = array(
+            'class'       => 'modTelegramUser',
+            'local'       => 'id',
+            'foreign'     => 'user',
+            'cardinality' => 'one',
+            'owner'       => 'local',
+        );
+        break;
 }
