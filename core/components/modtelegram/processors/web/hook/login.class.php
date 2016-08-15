@@ -14,7 +14,7 @@ class modHookLogInProcessor extends modTelegramActionsProcessor
             AND
             $manager = $this->modx->getObject($this->classManager, array(
                 'id'   => $this->getProperty('from'),
-                'user' => $user
+                'user' => $user->get('id')
             ))
         ) {
             if ($manager->setActive(true)) {
