@@ -1056,6 +1056,12 @@ class modtelegram
         }
 
         $data = $this->request($mode, $params);
+        if ($data !== true) {
+            $this->log('SetWebHook failure', $data, true);
+        }
+        else {
+            $this->log('SetWebHook success', $data, true);
+        }
 
         return $data;
     }
