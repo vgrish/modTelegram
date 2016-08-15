@@ -1,5 +1,9 @@
 Changelog for modTelegram.
 
-1.0.1-beta
+1.0.2-beta - (15.08.2016)
+==============
+- Fix EventSource
+
+1.0.1-beta - (15.08.2016)
 ==============
 - Initial

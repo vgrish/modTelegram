@@ -49,6 +49,13 @@
 			}).appendTo('head');
 		}
 
+		if (!window.EventSource) {
+			$('<script/>', {
+				type: 'text/javascript',
+				src: modTelegramConfig.assetsUrl + 'vendor/eventsource/eventsource.min.js',
+			}).appendTo('head');
+		}
+
 	};
 
 
@@ -292,29 +299,30 @@
 					);
 				}
 
-				this.source.onerror = function(e) {
+				if (this.source) {
+					this.source.onerror = function(e) {
 
-					switch (this.readyState) {
-						case EventSource.CONNECTING:
-							modTelegram.tools.log('reconect');
+						switch (this.readyState) {
+							case EventSource.CONNECTING:
+								modTelegram.tools.log('reconect');
 
-							if (modTelegramConfig.pusher.active) {
-								modTelegram.helper.listener.close();
-							}
-							break;
-						case EventSource.CLOSED:
-							modTelegram.tools.log('reinit');
-							modTelegram.helper.listener.init();
-							break;
+								if (modTelegramConfig.pusher.active) {
+									modTelegram.helper.listener.close();
+								}
+								break;
+							case EventSource.CLOSED:
+								modTelegram.tools.log('reinit');
+								modTelegram.helper.listener.init();
+								break;
 
-					}
-				};
+						}
+					};
 
-				this.source.onmessage = function(e) {
-					var data = JSON.parse(e.data);
-					modTelegram.helper.handleMessage(data, this);
-				};
-
+					this.source.onmessage = function(e) {
+						var data = JSON.parse(e.data);
+						modTelegram.helper.handleMessage(data, this);
+					};
+				}
 
 				if (modTelegramConfig.pusher.active) {
 					/*Pusher.logToConsole = true;*/
@@ -334,6 +342,7 @@
 			close: function() {
 				if (this.source) {
 					this.source.close();
+					//this.source.abort();
 				}
 			}
 		},
