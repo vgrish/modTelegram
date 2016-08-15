@@ -8,12 +8,23 @@ class modHookHistoryProcessor extends modTelegramActionsProcessor
     {
         @list($uid) = $this->getProperty('options', array());
 
-        /** @var modTelegramChat $chat */
-        if ($chat = $this->modx->getObject($this->classChat, array(
-            'uid' => $uid,
+        $q = $this->modx->newQuery($this->classChat);
+        $q->where(array(
             'mid' => $this->getProperty('from'),
-        ))
-        ) {
+        ));
+        if (!empty($uid)) {
+            $q->andCondition(array(
+                'uid' => $uid,
+            ));
+        }
+        else {
+            $q->andCondition(array(
+                'active' => true,
+            ));
+        }
+
+        /** @var modTelegramChat $chat */
+        if ($chat = $this->modx->getObject($this->classChat, $q)) {
             $q = $this->modx->newQuery($this->classMessage);
             $q->where(array(
                 'uid'  => $chat->getUser(),

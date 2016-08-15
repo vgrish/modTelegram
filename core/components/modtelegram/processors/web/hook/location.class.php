@@ -10,18 +10,23 @@ class modHookLocationProcessor extends modTelegramActionsProcessor
 
         @list($uid) = $this->getProperty('options', array());
 
-        /** @var modTelegramChat $chat */
-        if (
-            $chat = $this->modx->getObject($this->classChat, array(
+        $q = $this->modx->newQuery($this->classChat);
+        $q->where(array(
+            'mid' => $this->getProperty('from'),
+        ));
+        if (!empty($uid)) {
+            $q->andCondition(array(
                 'uid' => $uid,
-                'mid' => $this->getProperty('from'),
-            ))
-            OR
-            $chat = $this->modx->getObject($this->classChat, array(
-                'mid'    => $this->getProperty('from'),
-                'active' => true
-            ))
-        ) {
+            ));
+        }
+        else {
+            $q->andCondition(array(
+                'active' => true,
+            ));
+        }
+
+        /** @var modTelegramChat $chat */
+        if ($chat = $this->modx->getObject($this->classChat, $q)) {
 
             if ($user = $this->modx->getObject($this->classUser, array(
                 'id' => $chat->getUser()
