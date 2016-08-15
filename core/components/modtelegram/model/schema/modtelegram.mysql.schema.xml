@@ -23,6 +23,8 @@
 
 		<composite alias="Chats" class="modTelegramChat" local="id" foreign="uid" cardinality="many"
 				   owner="local"/>
+		<composite alias="Messages" class="modTelegramMessage" local="id" foreign="uid" cardinality="many"
+				   owner="local"/>
 		<aggregate alias="User" class="modUser" local="user" foreign="id" owner="foreign" cardinality="one"/>
 
 	</object>
@@ -47,6 +49,8 @@
 		</index>
 
 		<composite alias="Chats" class="modTelegramChat" local="id" foreign="mid" cardinality="many"
+				   owner="local"/>
+		<composite alias="Messages" class="modTelegramMessage" local="id" foreign="mid" cardinality="many"
 				   owner="local"/>
 		<aggregate alias="User" class="modUser" local="user" foreign="id" owner="foreign" cardinality="one"/>
 
@@ -76,7 +80,7 @@
 		<field key="from" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="pk"/>
 		<field key="type" dbtype="varchar" precision="100" phptype="string" null="false" default=""/>
 		<field key="message" dbtype="text" phptype="string" null="false" default=""/>
-		<field key="timestamp" dbtype="int" precision="20" phptype="timestamp" null="false" default="0" />
+		<field key="timestamp" dbtype="int" precision="20" phptype="timestamp" null="false" default="0"/>
 
 		<index alias="uid" name="uid" primary="false" unique="false" type="BTREE">
 			<column key="uid" length="" collation="A" null="false"/>

@@ -109,6 +109,14 @@ $xpdo_meta_map['modTelegramUser']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
+    'Messages' => 
+    array (
+      'class' => 'modTelegramMessage',
+      'local' => 'id',
+      'foreign' => 'uid',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
   ),
   'aggregates' => 
   array (
