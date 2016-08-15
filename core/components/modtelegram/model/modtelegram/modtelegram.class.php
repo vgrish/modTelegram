@@ -1,7 +1,7 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('error_reporting', -1);
+//ini_set('display_errors', 1);
+//ini_set('error_reporting', -1);
 
 if (!class_exists('Pusher')) {
     require_once MODX_CORE_PATH . 'components/modtelegram/vendor/pusher/lib/Pusher.php';
