@@ -29,7 +29,7 @@ $xpdo_meta_map['modTelegramUser']= array (
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,
-      'index' => 'index',
+      'index' => 'pk',
     ),
     'active' => 
     array (
@@ -50,9 +50,9 @@ $xpdo_meta_map['modTelegramUser']= array (
   ),
   'indexes' => 
   array (
-    'id' => 
+    'user' => 
     array (
-      'alias' => 'id',
+      'alias' => 'user',
       'primary' => true,
       'unique' => true,
       'type' => 'BTREE',
@@ -64,16 +64,6 @@ $xpdo_meta_map['modTelegramUser']= array (
           'collation' => 'A',
           'null' => false,
         ),
-      ),
-    ),
-    'user' => 
-    array (
-      'alias' => 'user',
-      'primary' => false,
-      'unique' => false,
-      'type' => 'BTREE',
-      'columns' => 
-      array (
         'user' => 
         array (
           'length' => '',

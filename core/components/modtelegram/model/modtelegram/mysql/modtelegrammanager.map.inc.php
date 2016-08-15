@@ -29,7 +29,7 @@ $xpdo_meta_map['modTelegramManager']= array (
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,
-      'index' => 'index',
+      'index' => 'pk',
     ),
     'active' => 
     array (
@@ -50,9 +50,9 @@ $xpdo_meta_map['modTelegramManager']= array (
   ),
   'indexes' => 
   array (
-    'id' => 
+    'manager' => 
     array (
-      'alias' => 'id',
+      'alias' => 'manager',
       'primary' => true,
       'unique' => true,
       'type' => 'BTREE',
@@ -64,16 +64,6 @@ $xpdo_meta_map['modTelegramManager']= array (
           'collation' => 'A',
           'null' => false,
         ),
-      ),
-    ),
-    'user' => 
-    array (
-      'alias' => 'user',
-      'primary' => false,
-      'unique' => false,
-      'type' => 'BTREE',
-      'columns' => 
-      array (
         'user' => 
         array (
           'length' => '',

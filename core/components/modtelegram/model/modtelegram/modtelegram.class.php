@@ -1242,6 +1242,9 @@ class modtelegram
         ) {
             $user = $user->get('id');
         }
+        else {
+            $user = null;
+        }
 
         return $user;
     }

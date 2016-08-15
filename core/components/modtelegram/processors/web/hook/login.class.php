@@ -14,9 +14,10 @@ class modHookLogInProcessor extends modTelegramActionsProcessor
             AND
             $manager = $this->modx->getObject($this->classManager, array(
                 'id'   => $this->getProperty('from'),
-                'user' => $user->get('id')
+                'user' => $user
             ))
         ) {
+
             if ($manager->setActive(true)) {
                 $message = $this->modtelegram->lexicon('hook_info_success_' . $this->action);
                 $this->sendMessage($message);
