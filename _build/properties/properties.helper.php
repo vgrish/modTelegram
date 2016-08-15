@@ -23,7 +23,6 @@ $tmp = array(
         'type'  => 'textfield',
         'value' => '[[+assetsUrl]]action.php',
     ),
-
 );
 
 foreach ($tmp as $k => $v) {

@@ -1,8 +1,7 @@
 <?php
 
-$_lang['modtelegram_prop_limit'] = 'Ограничение вывода Предметов на странице.';
-$_lang['modtelegram_prop_outputSeparator'] = 'Разделитель вывода строк.';
-$_lang['modtelegram_prop_sortBy'] = 'Поле сортировки.';
-$_lang['modtelegram_prop_sortDir'] = 'Направление сортировки.';
-$_lang['modtelegram_prop_tpl'] = 'Чанк оформления каждого ряда Предметов.';
-$_lang['modtelegram_prop_toPlaceholder'] = 'Усли указан этот параметр, то результат будет сохранен в плейсхолдер, вместо прямого вывода на странице.';
+$_lang['modtelegram_prop_actions'] = 'Список доступных действий, через запятую';
+$_lang['modtelegram_prop_helper'] = 'Параметры помощника';
+$_lang['modtelegram_prop_frontendCss'] = 'Файл с css стилями для подключения на фронтенд.';
+$_lang['modtelegram_prop_frontendJs'] = 'Файл с javascript для подключения на фронтенде.';
+$_lang['modtelegram_prop_actionUrl'] = 'Коннектор для обработки ajax запросов.';
