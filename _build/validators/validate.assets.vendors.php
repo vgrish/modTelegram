@@ -52,8 +52,8 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         }
 
         $cacheManager = $modx->getCacheManager();
-        //$cacheManager->deleteTree(MODX_ASSETS_PATH . 'components/modtelegram/vendor/',
-        //   array_merge(array('deleteTop' => true, 'skipDirs' => false, 'extensions' => array())));
+        $cacheManager->deleteTree(MODX_ASSETS_PATH . 'components/modtelegram/vendor/',
+            array_merge(array('deleteTop' => true, 'skipDirs' => false, 'extensions' => array())));
 
         $vendors = array(
             array(
