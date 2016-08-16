@@ -1,5 +1,9 @@
 Changelog for modTelegram.
 
+1.0.5-beta - (16.08.2016)
+==============
+- Remove "pusher cluster"
+
 1.0.4-beta - (16.08.2016)
 ==============
 - Fix "vendors"

@@ -328,7 +328,6 @@
 					/*Pusher.logToConsole = true;*/
 
 					var pusher = new Pusher(modTelegramConfig.pusher.key, {
-						cluster: modTelegramConfig.pusher.cluster,
 						encrypted: true
 					});
 					var channel = pusher.subscribe(modTelegramConfig.pusher.channel);

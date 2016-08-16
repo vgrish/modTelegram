@@ -419,7 +419,6 @@ class modtelegram
 
         $config['pusher']['active'] = (bool)$this->getOption('pusher_active');
         $config['pusher']['key'] = $this->getOption('pusher_key');
-        $config['pusher']['cluster'] = $this->getOption('pusher_cluster');
         $config['pusher']['channel'] = session_id();
 
         $this->modx->regClientStartupScript("<script type=\"text/javascript\">modTelegramConfig={$this->modx->toJSON($config)};</script>",
@@ -1340,7 +1339,6 @@ class modtelegram
                 $this->getOption('pusher_secret', null),
                 $this->getOption('pusher_id', null),
                 array(
-                    'cluster'   => $this->getOption('pusher_cluster', null),
                     'encrypted' => (bool)$this->getOption('pusher_encrypted', null),
                 )
             );
@@ -1390,7 +1388,6 @@ class modtelegram
 
             $pusher = $this->loadPusher();
             $pusher->trigger($uid, 'getmessage', $data);
-
         }
 
         return $save;

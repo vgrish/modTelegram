@@ -45,11 +45,6 @@ $tmp = array(
         'xtype' => 'textfield',
         'area'  => 'modtelegram_pusher',
     ),
-    'pusher_cluster' => array(
-        'value' => 'eu',
-        'xtype' => 'textfield',
-        'area'  => 'modtelegram_pusher',
-    ),
     'pusher_encrypted'  => array(
         'xtype' => 'combo-boolean',
         'value' => true,
