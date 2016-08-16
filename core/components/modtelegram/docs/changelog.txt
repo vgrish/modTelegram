@@ -1,5 +1,9 @@
 Changelog for modTelegram.
 
+1.0.4-beta - (16.08.2016)
+==============
+- Fix "vendors"
+
 1.0.3-beta - (15.08.2016)
 ==============
 - Fix "login"
