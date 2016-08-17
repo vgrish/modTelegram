@@ -11,7 +11,7 @@ class modHookLogOutProcessor extends modTelegramActionsProcessor
             'id' => $this->getProperty('from'),
         ))
         ) {
-            if ($manager->setActive(false)) {
+            if ($manager->remove()) {
                 $message = $this->modtelegram->lexicon('hook_info_success_' . $this->action);
                 $this->sendMessage($message);
 

@@ -7,9 +7,12 @@ class modHookChatOutProcessor extends modTelegramActionsProcessor
     function process()
     {
         /** @var modTelegramChat $chat */
-        if ($chat = $this->modx->newObject($this->classChat)) {
-            $chat->set('mid', $this->getProperty('from'));
-            if ($chat->setActive(false, false, false)) {
+        if ($chat = $this->modx->getObject($this->classChat, array(
+            'mid'    => $this->getProperty('from'),
+            'active' => true
+        ))
+        ) {
+            if ($chat->remove()) {
                 $message = $this->modtelegram->lexicon('hook_info_success_' . $this->action);
                 $this->sendMessage($message);
 
