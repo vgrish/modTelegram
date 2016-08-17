@@ -20,7 +20,12 @@ $tmp = array(
         'area'  => 'modtelegram_main',
     ),
     'web_hook_action' => array(
-        'value' => 'action,login,logout,chatin,chatout,reply,history,status,location',
+        'value' => 'action,login,logout,chatin,chatout,reply,history,status,location,removeall',
+        'xtype' => 'textarea',
+        'area'  => 'modtelegram_main',
+    ),
+    'action_password' => array(
+        'value' => '000000',
         'xtype' => 'textarea',
         'area'  => 'modtelegram_main',
     ),

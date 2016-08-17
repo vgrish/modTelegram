@@ -1,5 +1,9 @@
 Changelog for modTelegram.
 
+1.0.7-beta - (17.08.2016)
+==============
+- Add "removeall" action
+
 1.0.6-beta - (16.08.2016)
 ==============
 - Add clear "message", "chat" on "/chatout"

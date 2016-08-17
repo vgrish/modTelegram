@@ -15,6 +15,9 @@ $_lang['setting_modtelegram_web_hook_url_desc'] = 'Url для получения
 $_lang['setting_modtelegram_web_hook_action'] = 'Действия webhook';
 $_lang['setting_modtelegram_web_hook_action_desc'] = 'Список доступных действий webhook';
 
+$_lang['setting_modtelegram_action_password'] = 'Пароль';
+$_lang['setting_modtelegram_action_password_desc'] = 'Пароль подтверждения действий';
+
 
 $_lang['setting_modtelegram_pusher_active'] = 'Pusher';
 $_lang['setting_modtelegram_pusher_active_desc'] = 'Включить / Выключить Pusher';

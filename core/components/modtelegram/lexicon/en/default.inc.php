@@ -27,7 +27,7 @@ $_lang['modtelegram_description_action_history'] = '[[+action]] - получит
 $_lang['modtelegram_description_action_reply'] = '[[+action]] - написать в чат';
 $_lang['modtelegram_description_action_status'] = '[[+action]] - статус';
 $_lang['modtelegram_description_action_location'] = '[[+action]] - получить локацию';
-
+$_lang['modtelegram_description_action_removeall'] = '[[+action]] - удалить все данные';
 
 // info
 
@@ -61,7 +61,8 @@ $_lang['modtelegram_hook_info_failure_status'] = 'Ошибка получени�
 $_lang['modtelegram_hook_info_success_location'] = 'Локация пользователя';
 $_lang['modtelegram_hook_info_failure_location'] = 'Ошибка получения локации';
 
-
+$_lang['modtelegram_hook_info_success_removeall'] = 'Данные успешно удалены';
+$_lang['modtelegram_hook_info_failure_removeall'] = 'Ошибка удаления данных';
 
 
 $_lang['modtelegram_chatin_manager_info_failure_initialize'] = '';
