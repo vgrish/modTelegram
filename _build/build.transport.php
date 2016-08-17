@@ -80,6 +80,7 @@ if (defined('BUILD_USER_GROUPS_UPDATE')) {
     } else {
         $attributes = array(
             xPDOTransport::PRESERVE_KEYS => true,
+            xPDOTransport::UNIQUE_KEY    => array('name'),
         );
         foreach ($groups as $group) {
             $vehicle = $builder->createVehicle($group, $attributes);
