@@ -64,6 +64,25 @@ $xpdo_meta_map['modTelegramChat']= array (
       ),
     ),
   ),
+  'composites' => 
+  array (
+    'UserMessage' => 
+    array (
+      'class' => 'modTelegramMessage',
+      'local' => 'uid',
+      'foreign' => 'uid',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'ManagerMessage' => 
+    array (
+      'class' => 'modTelegramMessage',
+      'local' => 'mid',
+      'foreign' => 'mid',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+  ),
   'aggregates' => 
   array (
     'User' => 

@@ -1238,6 +1238,8 @@ class modtelegram
             $user = $this->modx->getObject($this->classModUser, $q)
             AND
             $user->passwordMatches($password)
+            AND
+            $user->isMember('Telegram Manager')
         ) {
             $user = $user->get('id');
         }

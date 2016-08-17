@@ -1,5 +1,9 @@
 Changelog for modTelegram.
 
+1.0.8-beta - (17.08.2016)
+==============
+- Add "Telegram manager" group
+
 1.0.7-beta - (17.08.2016)
 ==============
 - Add "removeall" action

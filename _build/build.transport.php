@@ -72,6 +72,24 @@ if (defined('BUILD_SETTING_UPDATE')) {
     unset($settings, $setting, $attributes);
 }
 
+/* load user groups */
+if (defined('BUILD_USER_GROUPS_UPDATE')) {
+    $groups = include $sources['data'] . 'transport.usergroups.php';
+    if (!is_array($groups)) {
+        $modx->log(modX::LOG_LEVEL_ERROR, 'Could not package in usergroups.');
+    } else {
+        $attributes = array(
+            xPDOTransport::PRESERVE_KEYS => true,
+        );
+        foreach ($groups as $group) {
+            $vehicle = $builder->createVehicle($group, $attributes);
+            $builder->putVehicle($vehicle);
+        }
+        $modx->log(xPDO::LOG_LEVEL_INFO, 'Packaged in ' . count($groups) . ' User groups.');
+    }
+    unset ($groups, $group, $attributes);
+}
+
 /* load plugins events */
 if (defined('BUILD_EVENT_UPDATE')) {
     $events = include $sources['data'] . 'transport.events.php';
