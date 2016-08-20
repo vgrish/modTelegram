@@ -1,8 +1,13 @@
 Changelog for modTelegram.
 
-1.0.9-beta - (20.08.2016)
+1.0.10-beta - (20.08.2016)
 ==============
 - Improvements "lexicon"
+
+1.0.9-beta - (17.08.2016)
+==============
+- Add "UNIQUE_KEY" for "group"
+- Improvement action "/status"
 
 1.0.8-beta - (17.08.2016)
 ==============

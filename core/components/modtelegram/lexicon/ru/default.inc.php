@@ -42,7 +42,7 @@ $_lang['modtelegram_description_action_removeall'] = '[[+action]] - удалит
 
 $_lang['modtelegram_chatin'] = '/chatin_[[+uid]]';
 $_lang['modtelegram_history'] = '[[+sender]]: [[+data]] - [[+message]]';
-$_lang['modtelegram_status'] = '[[+id]]: [[+active]]';
+$_lang['modtelegram_status'] = '[[+user_username]]: статус - [[+active]], чатов - [[+chat_count]]';
 $_lang['modtelegram_location'] = '[[+region.name_ru]], [[+city.name_ru]] [ [[+ip]] ]';
 
 $_lang['modtelegram_default_user'] = 'Пользователь';

@@ -1464,13 +1464,13 @@ class modtelegram
      *
      * @return array|mixed
      */
-    public function getUserData($id = 0)
+    public function getUserData($id = 0, $cache = true)
     {
         $tmp = array(
             'cache_key' => 'users/user_' . $id,
             'cacheTime' => 0,
         );
-        if (!$data = $this->getCache($tmp)) {
+        if (!$data = $this->getCache($tmp) OR !$cache) {
             $data = array();
 
             if (!empty($id)) {
@@ -1510,17 +1510,19 @@ class modtelegram
      *
      * @return array|mixed
      */
-    public function getManagerData($id = 0)
+    public function getManagerData($id = 0, $cache = true)
     {
         $tmp = array(
             'cache_key' => 'managers/manager_' . $id,
             'cacheTime' => 0,
         );
-        if (!$data = $this->getCache($tmp)) {
+        if (!$data = $this->getCache($tmp) OR !$cache) {
             $data = array();
 
             if (!empty($id)) {
                 $q = $this->modx->newQuery($this->classManager);
+                $q->leftJoin($this->classChat, $this->classChat,
+                    "{$this->classChat}.mid = {$this->classManager}.id");
                 $q->leftJoin($this->classModUser, $this->classModUser,
                     "{$this->classModUser}.id = {$this->classManager}.user");
                 $q->leftJoin($this->classModUserProfile, $this->classModUserProfile,
@@ -1531,6 +1533,7 @@ class modtelegram
 
                 $q->select($this->modx->getSelectColumns($this->classManager, $this->classManager, '', array(),
                     true));
+                $q->select("COUNT({$this->classChat}.mid) as chat_count");
                 $q->select($this->modx->getSelectColumns($this->classModUser, $this->classModUser, 'user_',
                     array('username'),
                     false));

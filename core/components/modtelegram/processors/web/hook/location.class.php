@@ -6,8 +6,6 @@ class modHookLocationProcessor extends modTelegramActionsProcessor
 {
     function process()
     {
-        $message = array();
-
         @list($uid) = $this->getProperty('options', array());
 
         $q = $this->modx->newQuery($this->classChat);
@@ -33,6 +31,7 @@ class modHookLocationProcessor extends modTelegramActionsProcessor
             ))
             ) {
 
+                $message = array();
                 $properties = (array)$user->get('properties');
                 $latitude = $this->modx->getOption('latitude', $properties);
                 $longitude = $this->modx->getOption('longitude', $properties);
