@@ -71,7 +71,7 @@
 			button: {
 				base: [
 					'<div class="modtelegram-helper-button modtelegram-active {type} {template} {position}">',
-					'helper',
+					'{modtelegram_helper}',
 					'</div>'
 				],
 			},
@@ -79,15 +79,15 @@
 				base: [
 					'<div class="modtelegram-helper-chat modtelegram-hidden {type} {template} {position}">',
 					'<div class="modtelegram-helper-chat-header {type} {template} {position}">',
-					'helper',
+					'{modtelegram_helper}',
 					'<div class="modtelegram-helper-close {type} {template} {position}">x</div>',
 					'</div>',
 
 					'<div class="modtelegram-helper-chat-welcome {type} {template} {position}">',
-					'<p>Welcome!</p>',
+					'<p>{modtelegram_chat_welcome}</p>',
 					'<form class="modtelegram-helper-form">',
 					'<input type="hidden" name="name" value="">',
-					'<button type="submit" value="chat/initialize">start chat?</button>',
+					'<button type="submit" value="chat/initialize">{modtelegram_chat_initialize}</button>',
 					'</form>',
 					'</div>',
 
@@ -98,29 +98,29 @@
 
 					'<div class="modtelegram-helper-chat-input-attach modtelegram-hidden">',
 					'<form class="modtelegram-helper-form" enctype="multipart/form-data">',
-					'<label class="modtelegram-helper-chat-input-attach-label modtelegram-color-grey modtelegram-icon-clip">',
+					'<label class="modtelegram-helper-chat-input-attach-label modtelegram-color-grey modtelegram-icon-clip" title="{modtelegram_chat_attachfile}">',
 					'<input type="file" name="file" style="display: none;">',
 					'</label>',
-					'<button type="submit" value="chat/attachfile" style="display:none;">send attach</button>',
+					'<button type="submit" value="chat/attachfile" style="display:none;">{modtelegram_chat_attachfile}</button>',
 					'</form>',
 					'</div>',
 
 					'<div class="modtelegram-helper-chat-input-text modtelegram-hidden">',
 					'<form class="modtelegram-helper-form">',
 					'<div class="modtelegram-helper-chat-input-text-wrapper">',
-					'<textarea name="message" placeholder="enter message..."></textarea>',
+					'<textarea name="message" placeholder="{modtelegram_chat_message}"></textarea>',
 					'</div>',
-					'<label class="modtelegram-helper-chat-input-text-label modtelegram-color-grey modtelegram-icon-send">',
+					'<label class="modtelegram-helper-chat-input-text-label modtelegram-color-grey modtelegram-icon-send" title="{modtelegram_chat_sendmessage}">',
 					'<input type="submit" value="chat/sendmessage" style="display: none;">',
 					'</label>',
-					'<button type="submit" value="chat/sendmessage" style="display:none;">send</button>',
+					'<button type="submit" value="chat/sendmessage" style="display:none;">{modtelegram_chat_sendmessage}</button>',
 					'</form>',
 					'</div>',
 
 					'</div>',
 
 					'<div class="modtelegram-helper-chat-footer modtelegram-hidden">',
-					'modtelegram',
+					'{modtelegram}',
 					'</div>',
 					'</div>'
 				],
@@ -173,11 +173,17 @@
 					data = $.extend(true, data || {}, {
 						'type': modTelegram.prefix + modTelegram.helper.config.type,
 						'template': modTelegram.prefix + modTelegram.helper.config.template,
-						'position': modTelegram.prefix + modTelegram.helper.config.position
+						'position': modTelegram.prefix + modTelegram.helper.config.position,
 					});
 
 					for (var key in data) {
 						template = template.replace(new RegExp('{' + key + '}', "g"), data[key]);
+					}
+
+					if (!!modTelegramLexicon) {
+						for (var key in modTelegramLexicon) {
+							template = template.replace(new RegExp('{' + key + '}', "g"), modTelegramLexicon[key]);
+						}
 					}
 
 					return template;
@@ -292,15 +298,15 @@
 
 				if (!this.source) {
 					this.source = new EventSource(modTelegramConfig.actionUrl +
-						'?action=chat/getmessage'+
-						'&propkey='+ modTelegramConfig.propkey +
-						'&ctx='+ modTelegramConfig.ctx +
+						'?action=chat/getmessage' +
+						'&propkey=' + modTelegramConfig.propkey +
+						'&ctx=' + modTelegramConfig.ctx +
 						''
 					);
 				}
 
 				if (this.source) {
-					this.source.onerror = function(e) {
+					this.source.onerror = function (e) {
 
 						switch (this.readyState) {
 							case EventSource.CONNECTING:
@@ -318,7 +324,7 @@
 						}
 					};
 
-					this.source.onmessage = function(e) {
+					this.source.onmessage = function (e) {
 						var data = JSON.parse(e.data);
 						modTelegram.helper.handleMessage(data, this);
 					};
@@ -331,14 +337,14 @@
 						encrypted: true
 					});
 					var channel = pusher.subscribe(modTelegramConfig.pusher.channel);
-					channel.bind('getmessage', function(data) {
+					channel.bind('getmessage', function (data) {
 						modTelegram.helper.handleMessage(data, this);
 					});
 				}
 
 			},
 
-			close: function() {
+			close: function () {
 				if (this.source) {
 					this.source.close();
 					//this.source.abort();
@@ -361,7 +367,7 @@
 			wrapper.scrollTop(h);
 		},
 
-		focusMessage: function() {
+		focusMessage: function () {
 			$(modTelegram.selector.helperChatMessage).focus();
 		},
 
@@ -516,10 +522,26 @@
 				modTelegram.bleep = new Audio(modTelegram.dataBleep);
 			}
 			modTelegram.bleep.play();
+		},
+
+		lexicon: function (key) {
+			if (!modTelegramLexicon) {
+				return '';
+			}
+			value = modTelegramLexicon[key];
+			if (this.empty(value)) {
+				value = '';
+			}
+			return value;
 		}
 
 	};
 
+
+	modTelegram.lexicon = function (key) {
+		return modTelegram.tools.lexicon('modtelegram_' + key);
+	};
+	
 
 	modTelegram.initialize();
 	window.modTelegram = modTelegram;

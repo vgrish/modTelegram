@@ -19,6 +19,10 @@ $tmp = array(
         'type'  => 'textfield',
         'value' => '[[+assetsUrl]]js/web/default.js',
     ),
+    'frontendLexicon'  => array(
+        'type'  => 'textfield',
+        'value' => 'modtelegram:default',
+    ),
     'actionUrl'   => array(
         'type'  => 'textfield',
         'value' => '[[+assetsUrl]]action.php',

@@ -4,6 +4,15 @@ include_once 'errors.inc.php';
 include_once 'setting.inc.php';
 
 $_lang['modtelegram'] = 'modtelegram';
+$_lang['modtelegram_helper'] = 'Помощник';
+
+
+$_lang['modtelegram_chat_welcome'] = 'Приветствую!';
+$_lang['modtelegram_chat_initialize'] = 'Начать чат';
+$_lang['modtelegram_chat_message'] = 'Введите сообщение...';
+$_lang['modtelegram_chat_sendmessage'] = 'Отправить сообщение';
+$_lang['modtelegram_chat_attachfile'] = 'Отправить файл';
+
 
 // actions
 

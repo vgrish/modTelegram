@@ -57,6 +57,8 @@ class modtelegram
             'assetsBasePath'  => MODX_ASSETS_PATH,
             'assetsBaseUrl'   => MODX_ASSETS_URL,
             'assetsPath'      => $assetsPath,
+            'lexiconPath'     => $assetsPath . 'js/web/lexicon.js',
+            'lexiconUrl'      => $assetsUrl . 'js/web/lexicon.js',
             'assetsUrl'       => $assetsUrl,
             'actionUrl'       => $assetsUrl . 'action.php',
             'hookUrl'         => $assetsUrl . 'webhook.php',
@@ -401,6 +403,42 @@ class modtelegram
         $properties = array_merge($this->config, $properties);
         $pls = $this->makePlaceholders($properties);
 
+        if (
+            $properties['frontendLexicon']
+            AND
+            !file_exists(str_replace($pls['pl'], $pls['vl'], $properties['lexiconPath']))
+        ) {
+            $topics = $this->explodeAndClean($properties['frontendLexicon']);
+            foreach ($topics as $topic) {
+                $this->modx->lexicon->load($topic);
+            }
+            $entries = $this->modx->lexicon->fetch('modtelegram');
+            $lexicon = '
+			modTelegramLexicon = {';
+            $s = '';
+            while (list($k, $v) = each($entries)) {
+                $s .= "'$k': " . '"' . strtr($v, array(
+                        '\\' => '\\\\',
+                        "'"  => "\\'",
+                        '"'  => '\\"',
+                        "\r" => '\\r',
+                        "\n" => '\\n',
+                        '</' => '<\/'
+                    )) . '",';
+            }
+            $s = trim($s, ',');
+            $lexicon .= $s . '
+			};';
+
+            if (!file_put_contents($properties['lexiconPath'], preg_replace("#[\r\n\t]+#is", ' ', $lexicon))) {
+                $properties['frontendLexicon'] = null;
+            }
+        }
+
+        if ($properties['frontendLexicon']) {
+            $this->modx->regClientScript(str_replace($pls['pl'], $pls['vl'], $properties['lexiconUrl']));
+        }
+
         if ($properties['frontendJs']) {
             $this->modx->regClientScript(str_replace($pls['pl'], $pls['vl'], $properties['frontendJs']));
         }
@@ -420,7 +458,7 @@ class modtelegram
         $config['pusher']['active'] = (bool)$this->getOption('pusher_active');
         $config['pusher']['key'] = $this->getOption('pusher_key');
         $config['pusher']['channel'] = session_id();
-
+        
         $this->modx->regClientStartupScript("<script type=\"text/javascript\">modTelegramConfig={$this->modx->toJSON($config)};</script>",
             true);
     }
@@ -1057,8 +1095,7 @@ class modtelegram
         $data = $this->request($mode, $params);
         if ($data !== true) {
             $this->log('SetWebHook failure', $data, true);
-        }
-        else {
+        } else {
             $this->log('SetWebHook success', $data, true);
         }
 
@@ -1242,8 +1279,7 @@ class modtelegram
             $user->isMember('Telegram Manager')
         ) {
             $user = $user->get('id');
-        }
-        else {
+        } else {
             $user = null;
         }
 
