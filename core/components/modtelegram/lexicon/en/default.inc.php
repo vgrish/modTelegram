@@ -84,7 +84,7 @@ $_lang['modtelegram_chatin_user_info_failure_sendmessage'] = 'Ошибка от�
 $_lang['modtelegram_chatin_user_info_success_sendmessage'] = '';
 
 
-$_lang['modtelegram_chat_user_info_failure_initialize'] = 'Нет доступных менеджеров';
-$_lang['modtelegram_chat_user_info_success_initialize'] = 'Приветствую, чем могу вам помочь?';
+//$_lang['modtelegram_chat_user_info_failure_initialize'] = 'Нет доступных менеджеров';
+//$_lang['modtelegram_chat_user_info_success_initialize'] = 'Приветствую, чем могу вам помочь?';
 
 
