@@ -58,10 +58,14 @@ class modPusherEventProcessor extends modTelegramActionsProcessor
 
             $message = $this->modtelegram->lexicon('event_user_chatout_success', array('uid' => $uid));
             $chat->sendMessage($message);
+
+            return true;
         }
 
         $message = $this->modtelegram->lexicon('event_user_chatout_failure', array('uid' => $uid));
         $chat->sendMessage($message);
+
+        return false;
     }
 
 }
