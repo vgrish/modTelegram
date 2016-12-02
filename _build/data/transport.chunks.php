@@ -2,10 +2,8 @@
 
 $chunks = array();
 
-$tmp = array(/*'tpl.modtelegram.item' => array(
-		'file' => 'item',
-		'description' => '',
-	),*/
+$tmp = array(
+    'modTelegram.user.info' => array('file' => 'user.info', 'description' => ''),
 );
 
 // Save chunks for setup options

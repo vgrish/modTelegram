@@ -28,13 +28,23 @@ class modChatInitializeProcessor extends modTelegramResponseProcessor
             $user->setIp();
 
             if (!$chat->isActive()) {
-                $message = $this->modtelegram->lexicon('chatin_manager_info_success_' . $this->action,
+
+                $message = array();
+                $message[] = $this->modtelegram->lexicon('chatin_manager_info_success_' . $this->action,
                     array('uid' => session_id()));
+
+                if ($tpl = $this->modtelegram->getOption('tpl_user_info', $this->properties)) {
+                    $message[] = $this->modtelegram->getChunk($tpl, $this->getProperties());
+                }
+
                 $chat->sendMessage($message);
             }
 
             if ($chat->isNew()) {
-                $message = $this->modtelegram->lexicon('chatin_user_info_success_' . $this->action);
+
+                $message = array();
+                $message[] = $this->modtelegram->lexicon('chatin_user_info_success_' . $this->action);
+
                 $this->modtelegram->writeManagerMessage(array(
                     'uid'     => session_id(),
                     'mid'     => $manager,

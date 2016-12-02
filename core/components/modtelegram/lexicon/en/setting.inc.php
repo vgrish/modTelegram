@@ -18,6 +18,9 @@ $_lang['setting_modtelegram_web_hook_action_desc'] = 'Список доступ�
 $_lang['setting_modtelegram_action_password'] = 'Пароль';
 $_lang['setting_modtelegram_action_password_desc'] = 'Пароль подтверждения действий';
 
+$_lang['setting_modtelegram_tpl_user_info'] = 'Чанк пользователя';
+$_lang['setting_modtelegram_tpl_user_info_desc'] = 'Чанк информации о пользователе';
+
 
 $_lang['setting_modtelegram_pusher_active'] = 'Pusher';
 $_lang['setting_modtelegram_pusher_active_desc'] = 'Включить / Выключить Pusher';
@@ -36,3 +39,6 @@ $_lang['setting_modtelegram_pusher_cluster_desc'] = 'Pusher cluster';
 
 $_lang['setting_modtelegram_pusher_encrypted'] = 'Pusher encrypted';
 $_lang['setting_modtelegram_pusher_encrypted_desc'] = 'Pusher encrypted';
+
+
+

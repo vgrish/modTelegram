@@ -15,6 +15,9 @@ $helper = $scriptProperties['helper'] = strpos($helper, '{') === 0
     ? $modx->fromJSON($helper)
     : array();
 
+$scriptProperties['resource'] = $modtelegram->getOption('resource', $scriptProperties, $modx->resource->id, true);
+$scriptProperties['user'] = $modtelegram->getOption('user', $scriptProperties, $modx->user->id, true);
+
 $propkey = $scriptProperties['propkey'] = $modx->getOption('propkey', $scriptProperties,
     sha1(serialize($scriptProperties)), true);
 

@@ -29,6 +29,11 @@ $tmp = array(
         'xtype' => 'textarea',
         'area'  => 'modtelegram_main',
     ),
+    'tpl_user_info'    => array(
+        'value' => 'modTelegram.user.info',
+        'xtype' => 'textfield',
+        'area'  => 'modtelegram_main',
+    ),
 
     'pusher_active'  => array(
         'xtype' => 'combo-boolean',
