@@ -1,5 +1,9 @@
 Changelog for modTelegram.
 
+1.0.13-beta - (22.07.2017)
+==============
+- Change "Pusher" path
+
 1.0.12-beta - (02.12.2016)
 ==============
 - Add "modTelegram.user.info" chunk
