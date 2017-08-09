@@ -7,7 +7,7 @@ if (!isset($stream['message']) OR !isset($stream['message']['text'])) {
     @session_write_close();
     die('Access denied');
 } else {
-    $options = strtolower(trim($stream['message']['text']));
+    $options = mb_strtolower(trim($stream['message']['text']), 'UTF-8');
 }
 
 define('MODX_API_MODE', true);

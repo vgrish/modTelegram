@@ -33,10 +33,11 @@ class modtelegram
     public $classModUser = 'modUser';
     public $classModUserProfile = 'modUserProfile';
 
+    /** @var Pusher\Pusher */
     public $pusher;
 
     /**
-     * @param modX  $modx
+     * @param modX $modx
      * @param array $config
      */
     function __construct(modX &$modx, array $config = array())
@@ -85,7 +86,7 @@ class modtelegram
      * @param       $n
      * @param array $p
      */
-    public function __call($n, array$p)
+    public function __call($n, array $p)
     {
         echo __METHOD__ . ' says: ' . $n;
     }
@@ -93,7 +94,7 @@ class modtelegram
     /**
      * @param       $key
      * @param array $config
-     * @param null  $default
+     * @param null $default
      *
      * @return mixed|null
      */
@@ -103,9 +104,9 @@ class modtelegram
         if (!empty($key) AND is_string($key)) {
             if ($config != null AND array_key_exists($key, $config)) {
                 $option = $config[$key];
-            } elseif (array_key_exists($key, $this->config)) {
+            } else if (array_key_exists($key, $this->config)) {
                 $option = $this->config[$key];
-            } elseif (array_key_exists("{$this->namespace}_{$key}", $this->modx->config)) {
+            } else if (array_key_exists("{$this->namespace}_{$key}", $this->modx->config)) {
                 $option = $this->modx->getOption("{$this->namespace}_{$key}");
             }
         }
@@ -118,7 +119,7 @@ class modtelegram
 
     /**
      * @param string $ctx
-     * @param array  $scriptProperties
+     * @param array $scriptProperties
      *
      * @return bool
      */
@@ -175,7 +176,7 @@ class modtelegram
         $key = '';
         if ($this->modx->lexicon->exists($message)) {
             $key = $message;
-        } elseif ($this->modx->lexicon->exists($this->namespace . '_' . $message)) {
+        } else if ($this->modx->lexicon->exists($this->namespace . '_' . $message)) {
             $key = $this->namespace . '_' . $message;
         }
         if ($key !== '') {
@@ -187,8 +188,8 @@ class modtelegram
 
     /**
      * @param string $message
-     * @param array  $data
-     * @param array  $placeholders
+     * @param array $data
+     * @param array $placeholders
      *
      * @return array|string
      */
@@ -205,8 +206,8 @@ class modtelegram
 
     /**
      * @param string $message
-     * @param array  $data
-     * @param array  $placeholders
+     * @param array $data
+     * @param array $placeholders
      *
      * @return array|string
      */
@@ -224,7 +225,7 @@ class modtelegram
 
     /**
      * @param string $action
-     * @param array  $data
+     * @param array $data
      *
      * @return array|modProcessorResponse|string
      */
@@ -258,7 +259,7 @@ class modtelegram
         }
         if ($this->config['jsonResponse'] AND is_array($output)) {
             $output = $this->modx->toJSON($output);
-        } elseif (!$this->config['jsonResponse'] AND !is_array($output)) {
+        } else if (!$this->config['jsonResponse'] AND !is_array($output)) {
             $output = $this->modx->fromJSON($output);
         }
 
@@ -277,6 +278,7 @@ class modtelegram
         $array = array_map('trim', $array);       // Trim array's values
         $array = array_keys(array_flip($array));  // Remove duplicate fields
         $array = array_filter($array);            // Remove empty values from array
+
         return $array;
     }
 
@@ -297,7 +299,7 @@ class modtelegram
     }
 
     /**
-     * @param array  $array
+     * @param array $array
      * @param string $prefix
      *
      * @return array
@@ -320,11 +322,11 @@ class modtelegram
      * from
      * https://github.com/bezumkin/pdoTools/blob/19195925226e3f8cb0ba3c8d727567e9f3335673/core/components/pdotools/model/pdotools/pdotools.class.php#L320
      *
-     * @param array  $array
+     * @param array $array
      * @param string $plPrefix
      * @param string $prefix
      * @param string $suffix
-     * @param bool   $uncacheable
+     * @param bool $uncacheable
      *
      * @return array
      */
@@ -334,7 +336,8 @@ class modtelegram
         $prefix = '[[+',
         $suffix = ']]',
         $uncacheable = true
-    ) {
+    )
+    {
         $result = array('pl' => array(), 'vl' => array());
         $uncachedPrefix = str_replace('[[', '[[!', $prefix);
         foreach ($array as $k => $v) {
@@ -357,7 +360,7 @@ class modtelegram
 
     /**
      * @param string $name
-     * @param array  $properties
+     * @param array $properties
      *
      * @return mixed|string
      */
@@ -365,7 +368,7 @@ class modtelegram
     {
         if (class_exists('pdoTools') AND $pdo = $this->modx->getService('pdoTools')) {
             $output = $pdo->getChunk($name, $properties);
-        } elseif (strpos($name, '@INLINE ') !== false) {
+        } else if (strpos($name, '@INLINE ') !== false) {
             $content = str_replace('@INLINE', '', $name);
             /** @var modChunk $chunk */
             $chunk = $this->modx->newObject('modChunk', array('name' => 'inline-' . uniqid()));
@@ -381,9 +384,9 @@ class modtelegram
 
     /**
      * @param string $message
-     * @param array  $data
-     * @param bool   $showLog
-     * @param bool   $writeLog
+     * @param array $data
+     * @param bool $showLog
+     * @param bool $writeLog
      */
     public function log($message = '', $data = array(), $showLog = false)
     {
@@ -423,7 +426,7 @@ class modtelegram
                         '"'  => '\\"',
                         "\r" => '\\r',
                         "\n" => '\\n',
-                        '</' => '<\/'
+                        '</' => '<\/',
                     )) . '",';
             }
             $s = trim($s, ',');
@@ -458,7 +461,7 @@ class modtelegram
         $config['pusher']['active'] = (bool)$this->getOption('pusher_active');
         $config['pusher']['key'] = $this->getOption('pusher_key');
         $config['pusher']['channel'] = session_id();
-        
+
         $this->modx->regClientStartupScript("<script type=\"text/javascript\">modTelegramConfig={$this->modx->toJSON($config)};</script>",
             true);
     }
@@ -595,7 +598,7 @@ class modtelegram
         $params = array_merge(array(
             'offset'  => 0,
             'limit'   => 100,
-            'timeout' => 0
+            'timeout' => 0,
         ), $params);
         $data = $this->request($mode, $params);
 
@@ -615,7 +618,7 @@ class modtelegram
         $params = array_merge(array(
             'user_id' => null,
             'offset'  => 0,
-            'limit'   => 100
+            'limit'   => 100,
         ), $params);
         $data = $this->request($mode, $params);
 
@@ -1190,7 +1193,7 @@ class modtelegram
 
     /**
      * @param string $mode
-     * @param null   $params
+     * @param null $params
      * @param string $url
      *
      * @return array|mixed
@@ -1213,7 +1216,7 @@ class modtelegram
                 CURLOPT_POST           => $post,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER     => array('Content-Type: ' . $contentType),
-                CURLOPT_SSL_VERIFYPEER => 0
+                CURLOPT_SSL_VERIFYPEER => 0,
             )
         );
 
@@ -1230,7 +1233,7 @@ class modtelegram
     }
 
     /**
-     * @param array  $response
+     * @param array $response
      * @param string $mode
      *
      * @return array
@@ -1268,7 +1271,7 @@ class modtelegram
             "{$this->classModUser}.id = {$this->classModUserProfile}.internalKey");
         $q->where(array(
             "{$this->classModUser}.active"       => true,
-            "{$this->classModUserProfile}.email" => $email
+            "{$this->classModUserProfile}.email" => $email,
         ));
         /** @var modUser $user */
         if (
@@ -1412,7 +1415,7 @@ class modtelegram
             'mid'     => $mid,
             'from'    => $from,
             'type'    => $type,
-            'message' => $message
+            'message' => $message,
         ), '', true, true);
 
         $save = $msg->save();
@@ -1425,7 +1428,10 @@ class modtelegram
             $data['manager'] = $this->getManagerData($mid);
 
             $pusher = $this->loadPusher();
-            $pusher->trigger($uid, 'getmessage', $data);
+            $response = $pusher->trigger($uid, 'getmessage', $data);
+            if ($response == false) {
+                $this->log('"getmessage" failure', $data, true);
+            }
         }
 
         return $save;
@@ -1439,7 +1445,7 @@ class modtelegram
     public function writeManagerMessage(array $data = array())
     {
         $data = array_merge($data, array(
-            'from' => 'manager'
+            'from' => 'manager',
         ));
 
         return $this->writeMessage($data);
@@ -1453,7 +1459,7 @@ class modtelegram
     public function writeUserMessage(array $data = array())
     {
         $data = array_merge($data, array(
-            'from' => 'user'
+            'from' => 'user',
         ));
 
         return $this->writeMessage($data);

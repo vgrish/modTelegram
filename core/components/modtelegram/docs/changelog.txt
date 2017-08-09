@@ -1,5 +1,10 @@
 Changelog for modTelegram.
 
+1.0.15-beta - (09.08.2017)
+==============
+- Add log to "writeMessage" [modtelegram]
+- Fix get "text" [webhook]
+
 1.0.14-beta - (09.08.2017)
 ==============
 - Fix "Pusher" class
