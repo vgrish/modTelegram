@@ -3,7 +3,7 @@
 //ini_set('display_errors', 1);
 //ini_set('error_reporting', -1);
 
-if (!class_exists('Pusher')) {
+if (!class_exists('Pusher\Pusher')) {
     require_once MODX_CORE_PATH . 'components/modtelegram/vendor/pusher/src/Pusher.php';
 }
 
@@ -1372,7 +1372,7 @@ class modtelegram
     public function loadPusher()
     {
         if (!$this->pusher) {
-            $this->pusher = new Pusher(
+            $this->pusher = new Pusher\Pusher(
                 $this->getOption('pusher_key', null),
                 $this->getOption('pusher_secret', null),
                 $this->getOption('pusher_id', null),
