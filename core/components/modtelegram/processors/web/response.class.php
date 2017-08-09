@@ -58,8 +58,8 @@ abstract class modTelegramResponseProcessor extends modProcessor
 
     protected function checkAction()
     {
-        $this->action = $this->getProperty('action');
-        $this->action = end($this->modtelegram->explodeAndClean($this->action, '/'));
+        $this->action = $this->modtelegram->explodeAndClean($this->getProperty('action'), '/');
+        $this->action = end($this->action);
 
         $actions = $this->getProperty('actions');
         $actions = $this->modtelegram->explodeAndClean($actions);
