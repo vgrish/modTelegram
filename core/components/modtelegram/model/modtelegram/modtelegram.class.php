@@ -125,7 +125,6 @@ class modtelegram
      */
     public function initialize($ctx = 'web', $scriptProperties = array())
     {
-        $this->modx->error->reset();
         $this->config = array_merge($this->config, $scriptProperties, array('ctx' => $ctx));
 
         if (!empty($this->initialized[$ctx])) {
@@ -231,7 +230,9 @@ class modtelegram
      */
     public function runProcessor($action = '', $data = array())
     {
-        $this->modx->error->reset();
+        if ($error = $this->modx->getService('error', 'error.modError')) {
+            $error->reset();
+        }
         $processorsPath = !empty($this->config['processorsPath']) ? $this->config['processorsPath'] : MODX_CORE_PATH;
         /* @var modProcessorResponse $response */
         $response = $this->modx->runProcessor($action, $data, array('processors_path' => $processorsPath));
