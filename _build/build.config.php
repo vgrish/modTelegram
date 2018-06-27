@@ -4,7 +4,7 @@
 define('PKG_NAME', 'modTelegram');
 define('PKG_NAME_LOWER', strtolower(PKG_NAME));
 
-define('PKG_VERSION', '1.0.16');
+define('PKG_VERSION', '1.0.17');
 define('PKG_RELEASE', 'beta');
 define('PKG_AUTO_INSTALL', true);
 define('PKG_NAMESPACE_PATH', '{core_path}components/' . PKG_NAME_LOWER . '/');
@@ -12,7 +12,7 @@ define('PKG_NAMESPACE_PATH', '{core_path}components/' . PKG_NAME_LOWER . '/');
 /* define paths */
 if (isset($_SERVER['MODX_BASE_PATH'])) {
     define('MODX_BASE_PATH', $_SERVER['MODX_BASE_PATH']);
-} elseif (file_exists(dirname(dirname(dirname(__FILE__))) . '/core')) {
+} else if (file_exists(dirname(dirname(dirname(__FILE__))) . '/core')) {
     define('MODX_BASE_PATH', dirname(dirname(dirname(__FILE__))) . '/');
 } else {
     define('MODX_BASE_PATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
@@ -49,13 +49,13 @@ define('BUILD_PLUGIN_STATIC', false);
 define('BUILD_USER_GROUPS_UPDATE', true);
 
 $BUILD_VALIDATORS = array(
-    'core.vendors',
-    'assets.vendors',
+//    'core.vendors',
+//    'assets.vendors',
 );
 
 $BUILD_RESOLVERS = array(
+//    'composer',
+//    'require',
     'extension',
     'tables',
-    //'chunks',
-    //'setup',
 );

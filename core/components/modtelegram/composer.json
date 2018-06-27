@@ -1,0 +1,9 @@
+{
+  "name": "modTelegram",
+  "require": {
+    "php": ">=5.4"
+  },
+  "require-dev": {
+    "pusher/pusher-php-server": "*"
+  }
+}

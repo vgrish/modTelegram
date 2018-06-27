@@ -9,110 +9,79 @@ if (!$modx = $object->xpdo AND !$object->xpdo instanceof modX) {
 switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_INSTALL:
     case xPDOTransport::ACTION_UPGRADE:
-
-        $modelPath = $modx->getOption('modtelegram.core_path', null,
+        $modelPath = $modx->getOption('modtelegram_core_path', null,
                 $modx->getOption('core_path') . 'components/modtelegram/') . 'model/';
-
         $modx->addPackage('modtelegram', $modelPath);
+
         $manager = $modx->getManager();
-
-        // Create or update new
-        $tables = array(
-            'modTelegramUser',
-            'modTelegramManager',
-            'modTelegramChat',
-            'modTelegramMessage'
-        );
-
-        foreach ($tables as $table) {
-            $manager->createObjectContainer($table);
-            $table_name = $modx->getTableName($table);
-
-            // FIELDS
-            $fields = array();
-            $sql = $modx->query("SHOW FIELDS FROM {$table_name}");
-            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-                if (strpos($row['Type'], 'int') === 0) {
-                    $type = 'integer';
-                } else {
-                    $type = preg_replace('#\(.*#', '', $row['Type']);
-                }
-                $fields[$row['Field']] = strtolower($type);
-            }
-
-            // Add or alter existing fields
-            $map = $modx->getFieldMeta($table);
-            foreach ($map as $key => $field) {
-                // Add new fields
-                if (!isset($fields[$key])) {
-                    if ($manager->addField($table, $key)) {
-                        $modx->log(modX::LOG_LEVEL_INFO, "Added field \"{$key}\" in the table \"{$table}\"");
-                    }
-                } else {
-                    $type = strtolower($field['dbtype']);
-                    if (strpos($type, 'int') === 0) {
-                        $type = 'integer';
-                    }
-                    // Modify existing fields
-                    if ($type != $fields[$key]) {
-                        if ($manager->alterField($table, $key)) {
-                            $modx->log(modX::LOG_LEVEL_INFO, "Updated field \"{$key}\" of the table \"{$table}\"");
-                        }
-                    }
+        $objects = array();
+        $schemaFile = MODX_CORE_PATH . 'components/modtelegram/model/schema/modtelegram.mysql.schema.xml';
+        if (is_file($schemaFile)) {
+            $schema = new SimpleXMLElement($schemaFile, 0, true);
+            if (isset($schema->object)) {
+                foreach ($schema->object as $obj) {
+                    $objects[] = (string)$obj['class'];
                 }
             }
-            // Remove old fields
-            foreach ($fields as $key => $field) {
-                if (!isset($map[$key])) {
-                    if ($manager->removeField($table, $key)) {
-                        $modx->log(modX::LOG_LEVEL_INFO, "Removed field \"{$key}\" of the table \"{$table}\"");
-                    }
-                }
+            unset($schema);
+        }
+        foreach ($objects as $tmp) {
+            $table = $modx->getTableName($tmp);
+            $sql = "SHOW TABLES LIKE '" . trim($table, '`') . "'";
+            $stmt = $modx->prepare($sql);
+            $newTable = true;
+            if ($stmt->execute() && $stmt->fetchAll()) {
+                $newTable = false;
             }
 
-            // INDEXES
-            $indexes = array();
-            $sql = $modx->query("SHOW INDEXES FROM {$table_name}");
+            // If the table is just created
+            if ($newTable) {
+                $manager->createObjectContainer($tmp);
+            } else {
+                // If the table exists
+                // 1. Operate with tables
+                $tableFields = array();
+                $c = $modx->prepare("SHOW COLUMNS IN {$modx->getTableName($tmp)}");
+                $c->execute();
+                while ($cl = $c->fetch(PDO::FETCH_ASSOC)) {
+                    $tableFields[$cl['Field']] = $cl['Field'];
+                }
+                foreach ($modx->getFields($tmp) as $field => $v) {
+                    if (in_array($field, $tableFields)) {
+                        unset($tableFields[$field]);
+                        $manager->alterField($tmp, $field);
+                    } else {
+                        $manager->addField($tmp, $field);
+                    }
+                }
+                foreach ($tableFields as $field) {
+                    $manager->removeField($tmp, $field);
+                }
+                // 2. Operate with indexes
+                $indexes = array();
+                $c = $modx->prepare("SHOW INDEX FROM {$modx->getTableName($tmp)}");
+                $c->execute();
+                while ($cl = $c->fetch(PDO::FETCH_ASSOC)) {
+                    $indexes[$cl['Key_name']] = $cl['Key_name'];
+                }
+                $level = $modx->getLogLevel();
+                $modx->setLogLevel(xPDO::LOG_LEVEL_FATAL);
 
-            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-                $name = $row['Key_name'];
-                if (!isset($indexes[$name])) {
-                    $indexes[$name] = array($row['Column_name']);
-                } else {
-                    $indexes[$name][] = $row['Column_name'];
+                foreach ($modx->getIndexMeta($tmp) as $name => $meta) {
+                    if (in_array($name, $indexes)) {
+                        unset($indexes[$name]);
+                    } else {
+                        $manager->addIndex($tmp, $name);
+                    }
                 }
-            }
-            foreach ($indexes as $name => $values) {
-                sort($values);
-                $indexes[$name] = implode(':', $values);
-            }
-            $map = $modx->getIndexMeta($table);
+                foreach ($indexes as $index) {
+                    $manager->removeIndex($tmp, $index);
+                }
 
-            // Remove old indexes
-            foreach ($indexes as $key => $index) {
-                if (!isset($map[$key])) {
-                    if ($manager->removeIndex($table, $key)) {
-                        $modx->log(modX::LOG_LEVEL_INFO, "Removed index \"{$key}\" of the table \"{$table}\"");
-                    }
-                }
-            }
-            // Add or alter existing
-            foreach ($map as $key => $index) {
-                ksort($index['columns']);
-                $index = implode(':', array_keys($index['columns']));
-                if (!isset($indexes[$key])) {
-                    if ($manager->addIndex($table, $key)) {
-                        $modx->log(modX::LOG_LEVEL_INFO, "Added index \"{$key}\" in the table \"{$table}\"");
-                    }
-                } else {
-                    if ($index != $indexes[$key]) {
-                        if ($manager->removeIndex($table, $key) && $manager->addIndex($table, $key)) {
-                            $modx->log(modX::LOG_LEVEL_INFO, "Updated index \"{$key}\" of the table \"{$table}\"");
-                        }
-                    }
-                }
+                $modx->setLogLevel($level);
             }
         }
+
 
         break;
 

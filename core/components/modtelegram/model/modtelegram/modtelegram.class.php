@@ -3,10 +3,6 @@
 //ini_set('display_errors', 1);
 //ini_set('error_reporting', -1);
 
-if (!class_exists('Pusher\Pusher')) {
-    require_once MODX_CORE_PATH . 'components/modtelegram/vendor/pusher/src/Pusher.php';
-}
-
 /**
  * The base class for modtelegram.
  */
@@ -1376,14 +1372,18 @@ class modtelegram
     public function loadPusher()
     {
         if (!$this->pusher) {
-            $this->pusher = new Pusher\Pusher(
-                $this->getOption('pusher_key', null),
-                $this->getOption('pusher_secret', null),
-                $this->getOption('pusher_id', null),
-                array(
-                    'encrypted' => (bool)$this->getOption('pusher_encrypted', null),
-                )
-            );
+            require_once MODX_CORE_PATH . 'components/modtelegram/vendor/autoload.php';
+
+            if (class_exists('Pusher\Pusher')) {
+                $this->pusher = new Pusher\Pusher(
+                    $this->getOption('pusher_key', null),
+                    $this->getOption('pusher_secret', null),
+                    $this->getOption('pusher_id', null),
+                    array(
+                        'encrypted' => (bool)$this->getOption('pusher_encrypted', null),
+                    )
+                );
+            }
         }
 
         return $this->pusher;

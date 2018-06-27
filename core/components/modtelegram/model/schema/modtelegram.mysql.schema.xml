@@ -5,10 +5,8 @@
 
 	<object class="modTelegramUser" table="modtelegram_users" extends="xPDOObject">
 		<field key="id" dbtype="varchar" precision="100" phptype="string" null="false" index="pk"/>
-		<field key="user" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"
-			   index="pk"/>
-		<field key="active" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" null="false"
-			   default="1" index="index"/>
+		<field key="user" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="pk"/>
+		<field key="active" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" null="false" default="1" index="index"/>
 		<field key="properties" dbtype="text" phptype="json" null="true"/>
 
 		<index alias="user" name="user" primary="true" unique="true" type="BTREE">
